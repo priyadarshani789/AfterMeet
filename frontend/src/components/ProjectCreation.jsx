@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function ProjectCreation({ onProjectCreated, onCancel }) {
-  const [step, setStep] = useState('basic'); // 'basic', 'team', 'done'
+  const [step, setStep] = useState('basic'); // 'basic', 'team', 'gchat', 'done'
   const [projectData, setProjectData] = useState({
     name: '',
     description: ''
@@ -11,6 +11,10 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
     name: '',
     role: '',
     availability: true
+  });
+  const [gchatData, setGchatData] = useState({
+    useGchat: false,
+    webhookUrl: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -131,10 +135,10 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-3xl font-bold text-gray-900">📋 Create New Project</h2>
-              <div className="text-sm text-gray-600">Step 1 of 2</div>
+              <div className="text-sm text-gray-600">Step 1 of 3</div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full w-1/2"></div>
+              <div className="bg-blue-600 h-2 rounded-full w-1/3"></div>
             </div>
           </div>
 
@@ -206,10 +210,10 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-3xl font-bold text-gray-900">👥 Add Team Members</h2>
-              <div className="text-sm text-gray-600">Step 2 of 2</div>
+              <div className="text-sm text-gray-600">Step 2 of 3</div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-blue-600 h-2 rounded-full w-full"></div>
+              <div className="bg-blue-600 h-2 rounded-full w-2/3"></div>
             </div>
           </div>
 
@@ -320,24 +324,208 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
 
           <div className="flex gap-4 pt-6 border-t">
             <button
-              onClick={handleFinish}
+              onClick={async () => {
+                // Save team members and go to gchat step
+                setLoading(true);
+                setError('');
+                try {
+                  for (const member of teamMembers) {
+                    await fetch(
+                      `http://localhost:8000/projects/${projectData.project.id}/users`,
+                      {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: member.name,
+                          role: member.role,
+                          availability: member.availability
+                        })
+                      }
+                    );
+                  }
+                  console.log('✅ Team members added, moving to Google Chat setup...');
+                  setStep('gchat');
+                } catch (err) {
+                  setError(err.message);
+                } finally {
+                  setLoading(false);
+                }
+              }}
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg font-bold hover:from-blue-600 hover:to-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? '💾 Saving...' : `✅ Create Project ${teamMembers.length > 0 ? `with ${teamMembers.length} member(s)` : ''}`}
+              {loading ? '🔄 Saving...' : `➜ Next: Google Chat Setup`}
             </button>
 
             <button
-              onClick={handleSkipTeamSetup}
+              onClick={async () => {
+                // Skip team members and go to gchat step
+                setStep('gchat');
+              }}
               disabled={loading}
               className="flex-1 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-bold hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ⏭️ Skip & Start
+              ⏭️ Skip Team
             </button>
           </div>
 
           <p className="text-center text-gray-600 text-sm mt-4">
             💡 You can add more team members later from the project settings
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Step 3: Google Chat Integration
+  if (step === 'gchat') {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold text-gray-900">💬 Google Chat Integration</h2>
+              <div className="text-sm text-gray-600">Step 3 of 3</div>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-blue-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+            </div>
+          </div>
+
+          <p className="text-gray-600 mb-6">
+            🚀 Get real-time notifications in Google Chat when new tasks are extracted from transcripts!
+          </p>
+
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 className="font-bold text-blue-900 mb-2">✨ How It Works</h3>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>✔️ Create a Google Chat space for your project</li>
+              <li>✔️ Generate a webhook URL from Google Chat</li>
+              <li>✔️ Paste it below to connect AfterMeet</li>
+              <li>✔️ Whenever tasks are extracted, they'll appear in your Chat space!</li>
+            </ul>
+          </div>
+
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (!gchatData.useGchat || !gchatData.webhookUrl.trim()) {
+                setError('Please enter a valid webhook URL');
+                return;
+              }
+
+              setLoading(true);
+              setError('');
+              try {
+                console.log('🔗 Configuring Google Chat webhook...');
+                const response = await fetch(
+                  `http://localhost:8000/projects/${projectData.project.id}/webhook`,
+                  {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      webhook_url: gchatData.webhookUrl
+                    })
+                  }
+                );
+
+                if (!response.ok) {
+                  const error = await response.json();
+                  throw new Error(error.detail || 'Failed to configure webhook');
+                }
+
+                const result = await response.json();
+                console.log('✅ Google Chat webhook configured:', result);
+
+                // Complete the project creation
+                setTimeout(() => {
+                  try {
+                    const updatedProject = { ...projectData.project };
+                    console.log('✅ Project created and Google Chat integrated!');
+                    onProjectCreated(updatedProject);
+                  } catch (err) {
+                    onProjectCreated(projectData.project);
+                  }
+                }, 500);
+              } catch (err) {
+                setError(err.message || 'Failed to configure webhook');
+                console.error('Error:', err);
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="space-y-6 mb-6"
+          >
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={gchatData.useGchat}
+                  onChange={(e) => setGchatData({ ...gchatData, useGchat: e.target.checked })}
+                  className="w-5 h-5"
+                  disabled={loading}
+                />
+                <div>
+                  <p className="font-semibold text-gray-900">Enable Google Chat Notifications</p>
+                  <p className="text-sm text-gray-600">Get task updates sent to your Google Chat space</p>
+                </div>
+              </label>
+
+              {gchatData.useGchat && (
+                <div className="mt-4 p-4 bg-white border border-blue-200 rounded-lg">
+                  <label className="block text-gray-700 font-bold mb-2">🔗 Google Chat Webhook URL</label>
+                  <input
+                    type="password"
+                    value={gchatData.webhookUrl}
+                    onChange={(e) => setGchatData({ ...gchatData, webhookUrl: e.target.value })}
+                    placeholder="Paste your webhook URL here (kept secret for security)"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    disabled={loading}
+                  />
+                  <p className="text-xs text-gray-600 mt-2">
+                    🔒 Your webhook URL is kept secure and never displayed • 📖 <a href="https://developers.google.com/chat/how-tos/webhooks" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      Learn how to get your webhook URL
+                    </a>
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {error && (
+              <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            <div className="flex gap-4 pt-6 border-t">
+              <button
+                type="submit"
+                disabled={loading || !gchatData.useGchat || !gchatData.webhookUrl.trim()}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? '🔄 Configuring...' : '✅ Create Project with Chat'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  // Skip Google Chat and finish
+                  try {
+                    onProjectCreated(projectData.project);
+                  } catch (err) {
+                    console.error('Error:', err);
+                  }
+                }}
+                disabled={loading}
+                className="flex-1 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-bold hover:bg-gray-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ⏭️ Skip & Finish
+              </button>
+            </div>
+          </form>
+
+          <p className="text-center text-gray-600 text-sm mt-4">
+            💡 You can configure Google Chat later from project settings
           </p>
         </div>
       </div>

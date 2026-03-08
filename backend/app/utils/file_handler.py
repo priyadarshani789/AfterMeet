@@ -5,12 +5,14 @@ from typing import Any, List, Dict
 import asyncio
 from datetime import datetime
 import uuid
+import requests
 
 DB_PATH = Path(__file__).parent.parent / "db"
 USERS_FILE = DB_PATH / "users.json"
 TASKS_FILE = DB_PATH / "tasks.json"
 PROJECTS_FILE = DB_PATH / "projects.json"
 TRANSCRIPTS_FILE = DB_PATH / "transcripts.json"
+WEBSTORE_FILE = DB_PATH / ".webstore.json"
 
 
 def ensure_db_exists():
@@ -40,14 +42,22 @@ def read_json(filepath: Path) -> Any:
     """Read JSON file with error handling"""
     try:
         if not filepath.exists():
+            # Return empty dict for webstore, empty list for others
+            if filepath.name == ".webstore.json":
+                return {}
             return []
         
         with open(filepath, 'r', encoding='utf-8-sig') as f:
             data = json.load(f)
-            # Ensure we always return a list for data files
+            # For webstore, return dict. For others, ensure list
+            if filepath.name == ".webstore.json":
+                return data if isinstance(data, dict) else {}
             return data if isinstance(data, list) else []
     except Exception as e:
         print(f"Error reading {filepath}: {e}")
+        # Return appropriate empty value
+        if filepath.name == ".webstore.json":
+            return {}
         return []
 
 
@@ -342,3 +352,121 @@ def get_all_transcripts() -> List[Dict]:
     ensure_db_exists()
     transcripts = read_json(TRANSCRIPTS_FILE)
     return sorted(transcripts, key=lambda x: x.get("created_at", ""), reverse=True)
+
+
+def set_project_webhook_url(project_id: str, webhook_url: str, project_name: str) -> Dict:
+    """Store webhook URL securely in .webstore.json (backend only, not exposed to frontend)"""
+    ensure_db_exists()
+    webstore = read_json(WEBSTORE_FILE)
+    
+    # Remove None values if it returned empty instead of dict
+    if not isinstance(webstore, dict):
+        webstore = {}
+    
+    # Store webhook with metadata
+    webstore[project_id] = {
+        "project_id": project_id,
+        "project_name": project_name,
+        "webhook_url": webhook_url,
+        "created_at": datetime.now().isoformat(),
+        "status": "active"
+    }
+    
+    write_json(WEBSTORE_FILE, webstore)
+    print(f"✅ Webhook stored for project {project_name} ({project_id})")
+    return {"status": "stored", "project_id": project_id}
+
+
+def get_project_webhook_status(project_id: str) -> Dict:
+    """Get webhook status WITHOUT exposing the URL (for frontend)"""
+    ensure_db_exists()
+    webstore = read_json(WEBSTORE_FILE)
+    
+    if not isinstance(webstore, dict):
+        webstore = {}
+    
+    if project_id in webstore:
+        webhook_data = webstore[project_id]
+        result = {
+            "has_webhook": True,
+            "project_id": project_id,
+            "project_name": webhook_data.get("project_name"),
+            "status": webhook_data.get("status", "active"),
+            "created_at": webhook_data.get("created_at")
+        }
+        return result
+    
+    return {
+        "has_webhook": False,
+        "project_id": project_id,
+        "status": "not_configured"
+    }
+
+
+def remove_project_webhook_url(project_id: str) -> Dict:
+    """Remove webhook configuration for a project"""
+    ensure_db_exists()
+    webstore = read_json(WEBSTORE_FILE)
+    
+    if not isinstance(webstore, dict):
+        webstore = {}
+    
+    if project_id in webstore:
+        project_name = webstore[project_id].get("project_name")
+        del webstore[project_id]
+        write_json(WEBSTORE_FILE, webstore)
+        print(f"✅ Webhook removed for project {project_name} ({project_id})")
+        return {"status": "removed", "project_id": project_id}
+    
+    return {"status": "not_found", "project_id": project_id}
+
+
+def send_tasks_to_webhook(project_id: str, tasks: List[Dict], project_name: str) -> Dict:
+    """Send extracted tasks to Google Chat webhook"""
+    ensure_db_exists()
+    webstore = read_json(WEBSTORE_FILE)
+    
+    if not isinstance(webstore, dict):
+        webstore = {}
+    
+    if project_id not in webstore:
+        print(f"⚠️ No webhook configured for project {project_name}")
+        return {"status": "no_webhook", "tasks_sent": 0}
+    
+    webhook_url = webstore[project_id].get("webhook_url")
+    if not webhook_url:
+        print(f"❌ Invalid webhook URL for project {project_name}")
+        return {"status": "invalid_webhook", "tasks_sent": 0}
+    
+    try:
+        # Format message for Google Chat with detailed task information
+        task_count = len(tasks)
+        
+        # Build detailed task list with owner names
+        task_details = []
+        for i, t in enumerate(tasks[:15], 1):  # Show first 15 tasks
+            title = t.get('title', 'Untitled Task')
+            owner = t.get('owner_name', t.get('owner', 'Unassigned'))
+            priority = t.get('priority', 'medium').upper()
+            
+            # Format: Task title | Owner: Name | Priority: HIGH
+            task_details.append(f"{i}. *{title}*\n   👤 Owner: {owner} | ⚡ Priority: {priority}")
+        
+        task_list = "\n\n".join(task_details)
+        if task_count > 15:
+            task_list += f"\n\n... and {task_count - 15} more tasks"
+        
+        message = {
+            "text": f"📋 *New Tasks Extracted - {project_name}*\n\n*Total: {task_count} tasks*\n\n{task_list}"
+        }
+        
+        # Send to Google Chat
+        response = requests.post(webhook_url, json=message, timeout=10)
+        response.raise_for_status()
+        
+        print(f"✅ Sent {task_count} tasks to Google Chat for {project_name}")
+        return {"status": "sent", "tasks_sent": task_count, "project_id": project_id}
+        
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Failed to send tasks to webhook: {str(e)}")
+        return {"status": "failed", "error": str(e), "tasks_sent": 0}

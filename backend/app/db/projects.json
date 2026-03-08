@@ -116,5 +116,66 @@
         "length": 1286
       }
     ]
+  },
+  {
+    "id": "b7d99e3e",
+    "name": "docsign",
+    "description": "",
+    "created_at": "2026-03-08T21:43:30.134280",
+    "updated_at": "2026-03-08T21:45:38.446041",
+    "tasks": [
+      {
+        "id": "fed35f72-7542-4f8c-a035-3b61ff8d860b",
+        "title": "Remove the IP solutions category and related options from the activity submission area",
+        "owner_id": "1772986421.4418478",
+        "owner_name": "Priyadarshani",
+        "priority": "high",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T21:45:38.395564",
+        "updated_at": "2026-03-08T21:45:38.395564"
+      },
+      {
+        "id": "114fb69c-6800-4bfa-9698-406357e83835",
+        "title": "Test changes on UAT",
+        "owner_id": "1772986421.4418478",
+        "owner_name": "Priyadarshani",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T21:45:38.405284",
+        "updated_at": "2026-03-08T21:45:38.405284"
+      },
+      {
+        "id": "6888680b-e9a5-44b7-bfcc-0ac86bfa6005",
+        "title": "Implement changes on production",
+        "owner_id": "1772986421.4418478",
+        "owner_name": "Priyadarshani",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T21:45:38.412917",
+        "updated_at": "2026-03-08T21:45:38.412917"
+      }
+    ],
+    "users": [
+      {
+        "id": "1772986421.4418478",
+        "name": "Priyadarshani",
+        "role": "Product Manager",
+        "availability": true
+      }
+    ],
+    "transcripts": [
+      {
+        "id": "56487796-949a-42ed-ae1b-b357ef3fc1a0",
+        "project_id": "b7d99e3e",
+        "project_name": "docsign",
+        "content": "Priyadarshani Kalbandhe  will immediately remove the IP solutions category and related options from the activity submission area because it is a critical issue, first testing the changes on UAT and then implementing them on production.",
+        "tasks_extracted": 3,
+        "created_at": "2026-03-08T21:45:38.420991",
+        "length": 235
+      }
+    ]
   }
 ]

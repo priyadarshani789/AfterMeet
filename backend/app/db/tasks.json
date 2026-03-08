@@ -515,5 +515,137 @@
     "deadline": null,
     "created_at": "2026-03-08T20:18:22.070764",
     "updated_at": "2026-03-08T20:18:22.070764"
+  },
+  {
+    "id": "fed35f72-7542-4f8c-a035-3b61ff8d860b",
+    "title": "Remove the IP solutions category and related options from the activity submission area",
+    "owner_id": "1772986421.4418478",
+    "owner_name": "Priyadarshani",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T21:45:38.395564",
+    "updated_at": "2026-03-08T21:45:38.395564"
+  },
+  {
+    "id": "114fb69c-6800-4bfa-9698-406357e83835",
+    "title": "Test changes on UAT",
+    "owner_id": "1772986421.4418478",
+    "owner_name": "Priyadarshani",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T21:45:38.405284",
+    "updated_at": "2026-03-08T21:45:38.405284"
+  },
+  {
+    "id": "6888680b-e9a5-44b7-bfcc-0ac86bfa6005",
+    "title": "Implement changes on production",
+    "owner_id": "1772986421.4418478",
+    "owner_name": "Priyadarshani",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T21:45:38.412917",
+    "updated_at": "2026-03-08T21:45:38.412917"
+  },
+  {
+    "id": "f012d7ca-60df-4aa2-a0e2-81996c15455c",
+    "title": "Deploy the weekly pulse email template to production after reviewing changes",
+    "owner_id": "1772992918.610421",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.039404",
+    "updated_at": "2026-03-08T23:32:43.039404"
+  },
+  {
+    "id": "f2684184-b557-4175-a713-ffa30ee30d65",
+    "title": "Delete the problem and comments from the database related to Pimal's submission",
+    "owner_id": "1772992918.610421",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.054265",
+    "updated_at": "2026-03-08T23:32:43.054265"
+  },
+  {
+    "id": "aeb0f400-fa57-4f5d-a638-3713471ce6b5",
+    "title": "Ask Pimal to resend the problem after deleting the existing one",
+    "owner_id": "1772992918.6534002",
+    "owner_name": "Bhagyashri",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.067209",
+    "updated_at": "2026-03-08T23:32:43.067209"
+  },
+  {
+    "id": "9e0f80e5-cc9f-44d2-a5d2-a638850d1557",
+    "title": "Change items remaining in UAT to 'production ready'",
+    "owner_id": "1772992918.610421",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.079797",
+    "updated_at": "2026-03-08T23:32:43.079797"
+  },
+  {
+    "id": "316bb86a-dd20-40af-94e3-27efbb306608",
+    "title": "Clarify the IP removal part: IP field should not appear when submitting an activity",
+    "owner_id": "1772992918.6534002",
+    "owner_name": "Bhagyashri",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.093879",
+    "updated_at": "2026-03-08T23:32:43.093879"
+  },
+  {
+    "id": "6b47cd7e-73a2-46d4-ad15-13c9a812326d",
+    "title": "Mark the time-based filter for top 10 customer engagement as 'Cancelled' or 'On Hold'",
+    "owner_id": "1772992918.610421",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.156318",
+    "updated_at": "2026-03-08T23:32:43.156318"
+  },
+  {
+    "id": "d5628d7d-fddd-41e6-b582-4adca827442b",
+    "title": "Remove IP solutions from the submission flow immediately",
+    "owner_id": "1772992918.6290753",
+    "owner_name": "Priyadarshani ",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.167829",
+    "updated_at": "2026-03-08T23:32:43.167829"
+  },
+  {
+    "id": "ea39bdd1-b421-465d-870d-c4f83f9abea3",
+    "title": "Ensure upcoming submissions cannot select the IP category",
+    "owner_id": "1772992918.610421",
+    "owner_name": "Atharva",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.181009",
+    "updated_at": "2026-03-08T23:32:43.181009"
+  },
+  {
+    "id": "78fc1832-8129-4b01-827f-13b46de14f9a",
+    "title": "Add the missing Service Line Leader name to the activity list view",
+    "owner_id": "1772992918.6534002",
+    "owner_name": "Bhagyashri",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T23:32:43.194589",
+    "updated_at": "2026-03-08T23:32:43.194589"
   }
 ]

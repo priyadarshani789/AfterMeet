@@ -11,7 +11,8 @@ from app.utils.file_handler import (
     get_projects, create_project, get_project, delete_project,
     add_task_to_project, get_project_tasks, get_project_users,
     add_user_to_project, update_project_task, delete_project_task,
-    store_transcript_in_project, get_project_transcripts, get_all_transcripts
+    store_transcript_in_project, get_project_transcripts, get_all_transcripts,
+    set_project_webhook_url, get_project_webhook_status, remove_project_webhook_url, send_tasks_to_webhook
 )
 
 logger = logging.getLogger(__name__)
@@ -449,6 +450,9 @@ async def extract_tasks_to_project(project_id: str, request: ProjectTranscriptRe
         
         logger.warning(f"[REQUEST #{current_count}] {len(tasks_in_project)} tasks added to project {project_id}")
         
+        # ℹ️ Webhook auto-send disabled - users can manually send via "Send to GChat" button
+        # This prevents duplicate messages if extraction is called multiple times
+        
         # Return tasks with warning if applicable
         response = {
             "tasks": tasks_in_project,
@@ -512,3 +516,123 @@ async def delete_project_task_endpoint(project_id: str, task_id: str):
     except Exception as e:
         logger.error(f"Error deleting task {task_id} from project {project_id}: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete task")
+
+
+# ============= WEBHOOK ENDPOINTS (Google Chat Integration) =============
+
+@router.post("/projects/{project_id}/webhook", response_model=dict)
+async def configure_project_webhook(project_id: str, webhook_data: dict):
+    """Configure Google Chat webhook for a project"""
+    try:
+        # Verify project exists
+        project = get_project(project_id)
+        project_name = project.get("name", "Unknown Project")
+        
+        webhook_url = webhook_data.get("webhook_url")
+        if not webhook_url:
+            raise HTTPException(status_code=400, detail="webhook_url is required")
+        
+        # Store webhook securely in backend-only .webstore.json
+        set_project_webhook_url(project_id, webhook_url, project_name)
+        logger.info(f"✅ Google Chat webhook configured for project {project_name} ({project_id})")
+        
+        return {
+            "status": "configured",
+            "project_id": project_id,
+            "project_name": project_name,
+            "message": "Google Chat webhook has been successfully configured"
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error configuring webhook for project {project_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to configure webhook")
+
+
+@router.get("/projects/{project_id}/webhook/status", response_model=dict)
+async def get_webhook_status(project_id: str):
+    """Get webhook status for a project (URL not exposed)"""
+    try:
+        # Verify project exists
+        project = get_project(project_id)
+        
+        status = get_project_webhook_status(project_id)
+        logger.info(f"🔗 Webhook status for project {project_id}: {status}")
+        return status
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error fetching webhook status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch webhook status")
+
+
+@router.delete("/projects/{project_id}/webhook", response_model=dict)
+async def remove_webhook(project_id: str):
+    """Remove webhook configuration from a project"""
+    try:
+        # Verify project exists
+        project = get_project(project_id)
+        
+        result = remove_project_webhook_url(project_id)
+        logger.info(f"✅ Webhook removed for project {project_id}")
+        
+        return {
+            "status": "removed",
+            "project_id": project_id,
+            "message": "Google Chat webhook has been removed"
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error removing webhook: {e}")
+        raise HTTPException(status_code=500, detail="Failed to remove webhook")
+
+
+@router.post("/projects/{project_id}/send-tasks-to-webhook", response_model=dict)
+async def send_tasks_to_webhook_endpoint(project_id: str):
+    """Manually send project's TODO tasks to Google Chat webhook"""
+    try:
+        # Verify project exists
+        project = get_project(project_id)
+        project_name = project.get("name", "Unknown Project")
+        
+        # Check if webhook is configured FIRST
+        webhook_status = get_project_webhook_status(project_id)
+        if not webhook_status.get("has_webhook"):
+            return {
+                "status": "no_webhook",
+                "message": f"❌ No Google Chat webhook configured for project '{project_name}'. Please configure one in project settings.",
+                "tasks_sent": 0,
+                "project_id": project_id
+            }
+        
+        # Get all tasks in the project
+        tasks = get_project_tasks(project_id)
+        
+        # Filter only TODO tasks
+        todo_tasks = [t for t in tasks if t.get("status") == "todo"]
+        
+        if not todo_tasks:
+            return {
+                "status": "no_tasks",
+                "message": "No TODO tasks found to send",
+                "tasks_sent": 0
+            }
+        
+        # Send to webhook if configured
+        result = send_tasks_to_webhook(project_id, todo_tasks, project_name)
+        
+        logger.info(f"✅ Manually sent {len(todo_tasks)} TODO tasks to GChat for project {project_name}")
+        
+        return {
+            "status": result.get("status"),
+            "tasks_sent": result.get("tasks_sent", 0),
+            "project_id": project_id,
+            "project_name": project_name,
+            "message": f"Sent {result.get('tasks_sent', 0)} TODO tasks to Google Chat"
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error sending tasks to webhook: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send tasks to webhook")

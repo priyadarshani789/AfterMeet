@@ -17,6 +17,7 @@ backend/.env
 backend/*.pyc
 backend/*.pyo
 backend/.DS_Store
+backend/app/db/.webstore.json
 
 # IDE
 .vscode/

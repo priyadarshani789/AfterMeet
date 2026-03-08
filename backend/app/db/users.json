@@ -53,5 +53,17 @@
     "name": "Bhagyashri",
     "role": "QA Engineer",
     "availability": true
+  },
+  {
+    "id": "1772992918.560984",
+    "name": "Kuppli Murthy",
+    "role": "Product Manager",
+    "availability": true
+  },
+  {
+    "id": "1772992918.6290753",
+    "name": "Priyadarshani ",
+    "role": "Developer",
+    "availability": true
   }
 ]
