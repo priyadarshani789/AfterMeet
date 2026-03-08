@@ -328,5 +328,71 @@
     "deadline": "2023-12-22",
     "created_at": "2026-03-08T18:52:03.241959",
     "updated_at": "2026-03-08T18:52:03.241959"
+  },
+  {
+    "id": "2fc9b732-23be-4437-9048-8d255910cc87",
+    "title": "Finish the API endpoints for notifications and push the code to the repository",
+    "owner_id": "1772977852.8574786",
+    "owner_name": "Rohan Gupta",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T19:21:23.952403",
+    "updated_at": "2026-03-08T19:21:23.952403"
+  },
+  {
+    "id": "278c3888-7580-4b15-a67b-10a1b770d91c",
+    "title": "Design the notification component and integrate it with the backend API",
+    "owner_id": "1772977852.8700953",
+    "owner_name": "Sneha Deshmukh",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": "2023-10-27",
+    "created_at": "2026-03-08T19:21:23.959798",
+    "updated_at": "2026-03-08T19:21:23.959798"
+  },
+  {
+    "id": "44a2e4f6-9213-4bda-87e3-8e8858c01783",
+    "title": "Configure the email notification service",
+    "owner_id": "1772977852.9313986",
+    "owner_name": "Karan Mehta",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T19:21:23.965090",
+    "updated_at": "2026-03-08T19:21:23.965090"
+  },
+  {
+    "id": "9e84d1f0-53db-4708-8bfd-d628bbe372a4",
+    "title": "Connect the email service to our staging environment",
+    "owner_id": "1772977852.9313986",
+    "owner_name": "Karan Mehta",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": "2023-10-27",
+    "created_at": "2026-03-08T19:21:23.971242",
+    "updated_at": "2026-03-08T19:21:23.971242"
+  },
+  {
+    "id": "f47addb3-9a39-40cd-8871-707a8c29d7c7",
+    "title": "Test both the dashboard notifications and email alerts",
+    "owner_id": "1772977852.8863072",
+    "owner_name": "Priya Nair",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T19:21:23.978786",
+    "updated_at": "2026-03-08T19:21:23.978786"
+  },
+  {
+    "id": "241a0625-e675-4838-a8a1-81bd9afd8bb6",
+    "title": "Prepare the API documentation and upload it to the project repository",
+    "owner_id": "1772977852.8574786",
+    "owner_name": "Rohan Gupta",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": "2023-10-27",
+    "created_at": "2026-03-08T19:21:23.986514",
+    "updated_at": "2026-03-08T19:21:23.986514"
   }
 ]

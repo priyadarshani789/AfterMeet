@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function TranscriptHistory({ projectId }) {
+export default function TranscriptHistory({ projectId, refreshTrigger = 0 }) {
   const [transcripts, setTranscripts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
@@ -11,7 +11,7 @@ export default function TranscriptHistory({ projectId }) {
     if (projectId) {
       fetchTranscripts();
     }
-  }, [projectId]);
+  }, [projectId, refreshTrigger]);
 
   const fetchTranscripts = async () => {
     try {

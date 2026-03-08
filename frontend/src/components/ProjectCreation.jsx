@@ -9,7 +9,8 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
   const [teamMembers, setTeamMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState({
     name: '',
-    role: ''
+    role: '',
+    availability: true
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -62,7 +63,7 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
 
     setError('');
     setTeamMembers([...teamMembers, { ...currentMember, id: Date.now().toString() }]);
-    setCurrentMember({ name: '', role: '' });
+    setCurrentMember({ name: '', role: '', availability: true });
     console.log('👤 Member added:', currentMember);
   };
 
@@ -76,7 +77,7 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
 
     try {
       for (const member of teamMembers) {
-        console.log(`➕ Adding member ${member.name} to project...`);
+        console.log(`➕ Adding member ${member.name} (${member.availability ? '✅ Available' : '❌ Unavailable'}) to project...`);
         await fetch(
           `http://localhost:8000/projects/${projectData.project.id}/users`,
           {
@@ -84,13 +85,14 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               name: member.name,
-              role: member.role
+              role: member.role,
+              availability: member.availability
             })
           }
         );
       }
 
-      console.log('✅ All team members added');
+      console.log('✅ All team members added with availability status');
       setStep('done');
       
       // Fetch the latest project data from backend to include all team members
@@ -221,9 +223,26 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
               <div className="space-y-2">
                 {teamMembers.map((member) => (
                   <div key={member.id} className="flex items-center justify-between bg-white p-3 rounded-lg border border-gray-200">
-                    <div>
+                    <div className="flex-1">
                       <p className="font-semibold text-gray-900">{member.name}</p>
                       <p className="text-sm text-gray-600">{member.role}</p>
+                      <div className="mt-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={member.availability}
+                            onChange={(e) => {
+                              setTeamMembers(teamMembers.map(m => 
+                                m.id === member.id ? {...m, availability: e.target.checked} : m
+                              ));
+                            }}
+                            className="w-4 h-4"
+                          />
+                          <span className={`text-sm font-medium ${member.availability ? 'text-green-600' : 'text-red-600'}`}>
+                            {member.availability ? '✅ Available' : '❌ Unavailable'}
+                          </span>
+                        </label>
+                      </div>
                     </div>
                     <button
                       onClick={() => handleRemoveMember(member.id)}
@@ -269,6 +288,19 @@ export default function ProjectCreation({ onProjectCreated, onCancel }) {
                   ))}
                 </select>
               </div>
+            </div>
+
+            <div className="flex items-center gap-3 bg-white p-3 rounded-lg border border-blue-300">
+              <input
+                type="checkbox"
+                checked={currentMember.availability}
+                onChange={(e) => setCurrentMember({ ...currentMember, availability: e.target.checked })}
+                className="w-4 h-4"
+                disabled={loading}
+              />
+              <label className="text-gray-700 font-medium cursor-pointer flex-1">
+                {currentMember.availability ? '✅ Available for Task Assignment' : '❌ Currently Unavailable'}
+              </label>
             </div>
 
             <button

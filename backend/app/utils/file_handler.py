@@ -10,6 +10,7 @@ DB_PATH = Path(__file__).parent.parent / "db"
 USERS_FILE = DB_PATH / "users.json"
 TASKS_FILE = DB_PATH / "tasks.json"
 PROJECTS_FILE = DB_PATH / "projects.json"
+TRANSCRIPTS_FILE = DB_PATH / "transcripts.json"
 
 
 def ensure_db_exists():
@@ -30,6 +31,9 @@ def ensure_db_exists():
     
     if not PROJECTS_FILE.exists():
         write_json(PROJECTS_FILE, [])
+    
+    if not TRANSCRIPTS_FILE.exists():
+        write_json(TRANSCRIPTS_FILE, [])
 
 
 def read_json(filepath: Path) -> Any:
@@ -274,34 +278,62 @@ def delete_project_task(project_id: str, task_id: str) -> bool:
 
 
 def store_transcript_in_project(project_id: str, transcript: str, tasks_extracted: int = 0) -> Dict:
-    """Store transcript in project history"""
+    """Store transcript in both project history and dedicated transcripts database with project metadata"""
     ensure_db_exists()
     projects = get_projects()
     
+    # Find project and get its name
+    project_name = None
+    for project in projects:
+        if project["id"] == project_id:
+            project_name = project.get("name", "Unknown Project")
+            break
+    
+    if not project_name:
+        raise ValueError(f"Project {project_id} not found")
+    
+    # Create transcript record with metadata including project name
+    transcript_record = {
+        "id": str(uuid.uuid4()),
+        "project_id": project_id,
+        "project_name": project_name,
+        "content": transcript,
+        "tasks_extracted": tasks_extracted,
+        "created_at": datetime.now().isoformat(),
+        "length": len(transcript)
+    }
+    
+    # Store in project's transcripts array
     for i, project in enumerate(projects):
         if project["id"] == project_id:
             # Initialize transcripts array if it doesn't exist
             if "transcripts" not in project:
                 project["transcripts"] = []
             
-            # Create transcript record with metadata
-            transcript_record = {
-                "id": str(uuid.uuid4()),
-                "content": transcript,
-                "tasks_extracted": tasks_extracted,
-                "created_at": datetime.now().isoformat(),
-                "length": len(transcript)
-            }
-            
             project["transcripts"].append(transcript_record)
             projects[i]["updated_at"] = datetime.now().isoformat()
             write_json(PROJECTS_FILE, projects)
-            return transcript_record
+            break
     
-    raise ValueError(f"Project {project_id} not found")
+    # Also store in dedicated transcripts database
+    transcripts = read_json(TRANSCRIPTS_FILE)
+    transcripts.append(transcript_record)
+    write_json(TRANSCRIPTS_FILE, transcripts)
+    
+    return transcript_record
 
 
 def get_project_transcripts(project_id: str) -> List[Dict]:
-    """Get all transcripts for a project"""
-    project = get_project(project_id)
-    return project.get("transcripts", [])
+    """Get all transcripts for a specific project from the transcripts database"""
+    ensure_db_exists()
+    transcripts = read_json(TRANSCRIPTS_FILE)
+    # Filter transcripts for this project and sort by date (newest first)
+    project_transcripts = [t for t in transcripts if t.get("project_id") == project_id]
+    return sorted(project_transcripts, key=lambda x: x.get("created_at", ""), reverse=True)
+
+
+def get_all_transcripts() -> List[Dict]:
+    """Get all transcripts from the database"""
+    ensure_db_exists()
+    transcripts = read_json(TRANSCRIPTS_FILE)
+    return sorted(transcripts, key=lambda x: x.get("created_at", ""), reverse=True)

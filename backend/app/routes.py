@@ -11,7 +11,7 @@ from app.utils.file_handler import (
     get_projects, create_project, get_project, delete_project,
     add_task_to_project, get_project_tasks, get_project_users,
     add_user_to_project, update_project_task, delete_project_task,
-    store_transcript_in_project, get_project_transcripts
+    store_transcript_in_project, get_project_transcripts, get_all_transcripts
 )
 
 logger = logging.getLogger(__name__)
@@ -253,7 +253,8 @@ async def add_user_to_project_endpoint(project_id: str, user_data: dict):
         user = {
             "id": str(time.time()),
             "name": user_data.get("name"),
-            "role": user_data.get("role", "Team Member")
+            "role": user_data.get("role", "Team Member"),
+            "availability": user_data.get("availability", True)  # Default: available
         }
         
         added_user = add_user_to_project(project_id, user)
@@ -264,6 +265,74 @@ async def add_user_to_project_endpoint(project_id: str, user_data: dict):
     except Exception as e:
         logger.error(f"Error adding user to project {project_id}: {e}")
         raise HTTPException(status_code=500, detail="Failed to add user")
+
+
+@router.put("/projects/{project_id}/users/{user_id}/availability", response_model=dict)
+async def update_user_availability(project_id: str, user_id: str, availability_data: dict):
+    """Update a team member's availability status"""
+    try:
+        project = get_project(project_id)
+        users = project.get("users", [])
+        
+        # Find and update the user
+        user_found = False
+        for user in users:
+            if user.get("id") == user_id:
+                user["availability"] = availability_data.get("availability", True)
+                user_found = True
+                break
+        
+        if not user_found:
+            raise HTTPException(status_code=404, detail="User not found in project")
+        
+        # Save updated project
+        from app.utils.file_handler import write_json, PROJECTS_FILE
+        projects = get_projects()
+        for proj in projects:
+            if proj["id"] == project_id:
+                proj["users"] = users
+                proj["updated_at"] = time.time()
+                break
+        write_json(PROJECTS_FILE, projects)
+        
+        logger.info(f"✅ Updated availability for user {user_id} in project {project_id}")
+        return {"id": user_id, "availability": availability_data.get("availability", True)}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error updating user availability: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update availability")
+
+
+@router.get("/projects/{project_id}/users/availability", response_model=dict)
+async def get_project_availability_status(project_id: str):
+    """Get availability status of all team members in a project"""
+    try:
+        project = get_project(project_id)
+        users = project.get("users", [])
+        
+        availability_data = {
+            "total_members": len(users),
+            "available_count": sum(1 for u in users if u.get("availability", True)),
+            "unavailable_count": sum(1 for u in users if not u.get("availability", True)),
+            "members": [
+                {
+                    "id": u.get("id"),
+                    "name": u.get("name"),
+                    "role": u.get("role"),
+                    "availability": u.get("availability", True)
+                }
+                for u in users
+            ]
+        }
+        
+        logger.info(f"Retrieved availability status for project {project_id}: {availability_data['available_count']}/{availability_data['total_members']} available")
+        return availability_data
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error fetching availability status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch availability status")
 
 
 @router.get("/projects/{project_id}/transcripts", response_model=List[dict])
@@ -277,6 +346,18 @@ async def get_project_transcripts_endpoint(project_id: str):
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         logger.error(f"Error fetching transcripts for project {project_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch transcripts")
+
+
+@router.get("/transcripts", response_model=List[dict])
+async def get_all_transcripts_endpoint():
+    """Get all stored transcripts across all projects"""
+    try:
+        transcripts = get_all_transcripts()
+        logger.info(f"Retrieved {len(transcripts)} total transcripts")
+        return transcripts
+    except Exception as e:
+        logger.error(f"Error fetching all transcripts: {e}")
         raise HTTPException(status_code=500, detail="Failed to fetch transcripts")
 
 

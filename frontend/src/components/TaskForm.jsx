@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function TaskForm({ onTasksExtracted, loading = false, projectId = null }) {
@@ -8,6 +8,48 @@ export default function TaskForm({ onTasksExtracted, loading = false, projectId 
   const [error, setError] = useState(null);
   const [warning, setWarning] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [teamAvailability, setTeamAvailability] = useState([]);
+  const [showAvailabilityPanel, setShowAvailabilityPanel] = useState(false);
+  const [fetchingAvailability, setFetchingAvailability] = useState(false);
+
+  // Fetch team availability status when projectId changes
+  useEffect(() => {
+    if (projectId) {
+      fetchTeamAvailability();
+    }
+  }, [projectId]);
+
+  const fetchTeamAvailability = async () => {
+    try {
+      setFetchingAvailability(true);
+      const response = await axios.get(`http://localhost:8000/projects/${projectId}/users/availability`);
+      setTeamAvailability(response.data.members || []);
+      console.log('📊 Team availability loaded:', response.data);
+    } catch (error) {
+      console.error('Error fetching team availability:', error);
+      setTeamAvailability([]);
+    } finally {
+      setFetchingAvailability(false);
+    }
+  };
+
+  const updateMemberAvailability = async (userId, isAvailable) => {
+    try {
+      await axios.put(
+        `http://localhost:8000/projects/${projectId}/users/${userId}/availability`,
+        { availability: isAvailable }
+      );
+      console.log(`✅ Updated availability for ${userId}`);
+      
+      // Update local state
+      setTeamAvailability(teamAvailability.map(m =>
+        m.id === userId ? { ...m, availability: isAvailable } : m
+      ));
+    } catch (error) {
+      console.error('Error updating availability:', error);
+      alert('Failed to update availability status');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,6 +145,51 @@ export default function TaskForm({ onTasksExtracted, loading = false, projectId 
           />
         </div>
 
+        {/* Team Availability Panel */}
+        {projectId && teamAvailability.length > 0 && (
+          <div className="border border-green-200 bg-green-50 rounded-lg p-4">
+            <button
+              type="button"
+              onClick={() => setShowAvailabilityPanel(!showAvailabilityPanel)}
+              className="w-full flex items-center justify-between font-semibold text-gray-900 hover:text-blue-600 transition"
+            >
+              <span>
+                👥 Team Availability ({teamAvailability.filter(m => m.availability).length}/{teamAvailability.length} available)
+              </span>
+              <span>{showAvailabilityPanel ? '▼' : '▶'}</span>
+            </button>
+
+            {showAvailabilityPanel && (
+              <div className="mt-4 space-y-2 pt-4 border-t border-green-200">
+                {fetchingAvailability ? (
+                  <p className="text-gray-600">Loading availability status...</p>
+                ) : (
+                  teamAvailability.map(member => (
+                    <div key={member.id} className="flex items-center justify-between bg-white p-3 rounded border border-green-200">
+                      <div>
+                        <p className="font-medium text-gray-900">{member.name}</p>
+                        <p className="text-xs text-gray-600">{member.role}</p>
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={member.availability}
+                          onChange={(e) => updateMemberAvailability(member.id, e.target.checked)}
+                          className="w-4 h-4"
+                          disabled={isLoading || isSubmitting}
+                        />
+                        <span className={`text-sm font-medium ${member.availability ? 'text-green-600' : 'text-red-600'}`}>
+                          {member.availability ? '✅ Available' : '❌ Unavailable'}
+                        </span>
+                      </label>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
             ⚠️ {error}
@@ -139,7 +226,9 @@ export default function TaskForm({ onTasksExtracted, loading = false, projectId 
         <p className="text-sm text-blue-900 font-semibold mb-2">📌 How it works:</p>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>✓ Paste your meeting transcript above</li>
+          <li>✓ Check team member availability (expand panel above)</li>
           <li>✓ AI extracts actionable tasks automatically</li>
+          <li>✓ Tasks assigned only to available team members</li>
           <li>✓ Tasks appear in the Kanban board below</li>
           <li>✓ Mentions of team members are tracked</li>
         </ul>

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "9a284d67-0ca0-4cd9-8500-3542fc12f353",
+    "project_id": "98e66778",
+    "project_name": "TaskFlow",
+    "content": "Priya: Good morning everyone. Today we need to discuss progress on the notification system for the TaskFlow platform.\n\nRohan: I have already started working on the backend service for sending task reminders. I will finish the API endpoints for notifications and push the code to the repository by Thursday.\n\nPriya: That sounds good. Sneha, once Rohan completes the API, please add the notification panel in the dashboard so users can see reminders for their tasks.\n\nSneha: Sure. I will design the notification component and integrate it with the backend API by Friday.\n\nKaran: I will also configure the email notification service so that users receive reminders for upcoming deadlines.\n\nPriya: Great. Please make sure the email service is connected to our staging environment before the end of the week.\n\nMeera: After the notification feature is ready, I will test both the dashboard notifications and email alerts to make sure everything works properly.\n\nPriya: Perfect. Also, we need documentation for the notification API. Rohan, please prepare the documentation and upload it to the project repository by Friday.\n\nRohan: Okay, I will add the API documentation along with usage examples.\n\nPriya: Excellent. Let’s try to complete all these tasks before the next sprint review meeting.",
+    "tasks_extracted": 6,
+    "created_at": "2026-03-08T19:21:23.995453",
+    "length": 1286
+  }
+]

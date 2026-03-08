@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 def auto_assign_owner(mentioned_name: Optional[str] = None, available_users: Optional[List[Dict]] = None) -> tuple[Optional[str], Optional[str]]:
     """
     Auto-assign task owner based on mentioned name or random selection.
+    Only assigns to available team members.
     Returns tuple of (owner_id, owner_name)
     
     Args:
@@ -26,15 +27,27 @@ def auto_assign_owner(mentioned_name: Optional[str] = None, available_users: Opt
     if not users:
         return None, None
     
-    # If owner is mentioned, try to find matching user
+    # Filter only available users (default availability is True if not specified)
+    available_members = [u for u in users if u.get("availability", True)]
+    
+    # If no available members, fall back to all users
+    if not available_members:
+        logger.warning("⚠️ No available team members. Falling back to all members.")
+        available_members = users
+    
+    # If owner is mentioned, try to find matching available user
     if mentioned_name:
         mentioned_lower = mentioned_name.lower().strip()
-        for user in users:
+        for user in available_members:
             if mentioned_lower in user["name"].lower():
+                availability_status = "✅ available" if user.get("availability", True) else "❌ unavailable"
+                logger.info(f"Found matching user: {user['name']} ({availability_status})")
                 return user["id"], user["name"]
     
-    # If not found or not mentioned, randomly assign
-    selected_user = random.choice(users)
+    # If not found or not mentioned, randomly assign from available members
+    selected_user = random.choice(available_members)
+    availability_status = "✅ available" if selected_user.get("availability", True) else "❌ unavailable"
+    logger.info(f"Auto-assigned task to: {selected_user['name']} ({availability_status})")
     return selected_user["id"], selected_user["name"]
 
 

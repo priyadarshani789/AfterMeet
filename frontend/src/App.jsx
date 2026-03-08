@@ -4,6 +4,7 @@ import KanbanBoard from './components/KanbanBoard';
 import ProjectList from './components/ProjectList';
 import ProjectCreation from './components/ProjectCreation';
 import TranscriptHistory from './components/TranscriptHistory';
+import GlobalTranscriptHistory from './components/GlobalTranscriptHistory';
 import axios from 'axios';
 
 export default function App() {
@@ -11,6 +12,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [refreshKanban, setRefreshKanban] = useState(0);
+  const [refreshTranscripts, setRefreshTranscripts] = useState(0);
   const [projectUsers, setProjectUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +50,14 @@ export default function App() {
     fetchProjectUsers(project.id);
   };
 
+  const handleSelectProjectFromTranscript = (projectId) => {
+    console.log('📜 Selecting project from transcript:', projectId);
+    const project = projects.find(p => p.id === projectId);
+    if (project) {
+      handleProjectSelected(project);
+    }
+  };
+
   const handleCreateProject = (project) => {
     // Project is already created by ProjectCreation component
     // Just update the state and select it
@@ -63,6 +73,9 @@ export default function App() {
     
     // Refresh Kanban board
     setRefreshKanban((prev) => prev + 1);
+    
+    // Refresh transcript history
+    setRefreshTranscripts((prev) => prev + 1);
     
     // Refresh project users when tasks are extracted
     if (selectedProject) {
@@ -173,10 +186,15 @@ export default function App() {
 
             {/* Transcript History */}
             <div className="mt-8">
-              <TranscriptHistory projectId={selectedProject.id} />
+              <TranscriptHistory projectId={selectedProject.id} refreshTrigger={refreshTranscripts} />
             </div>
           </>
         )}
+
+        {/* Global Transcript Database - Always Visible */}
+        <div className="mt-12 border-t-2 border-gray-300 pt-8">
+          <GlobalTranscriptHistory onSelectProject={handleSelectProjectFromTranscript} />
+        </div>
       </div>
     </div>
   );
