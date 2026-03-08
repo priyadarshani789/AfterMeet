@@ -1,0 +1,41 @@
+# Frontend
+frontend/node_modules/
+frontend/.env.local
+frontend/.env.production.local
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Backend
+backend/venv/
+backend/.venv/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/services/__pycache__/
+backend/app/utils/__pycache__/
+backend/.env
+backend/*.pyc
+backend/*.pyo
+backend/.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env.local
+.env.*.local
