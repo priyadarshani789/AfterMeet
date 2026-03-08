@@ -23,5 +23,35 @@
     "id": "1772975166.6180487",
     "name": "Meera Joshi",
     "role": "Designer"
+  },
+  {
+    "id": "1772981293.7238464",
+    "name": "Murthy",
+    "role": "Product Manager",
+    "availability": true
+  },
+  {
+    "id": "1772981293.737211",
+    "name": "Priyadarshani",
+    "role": "Developer",
+    "availability": true
+  },
+  {
+    "id": "1772981293.750475",
+    "name": "Sanskruti",
+    "role": "Developer",
+    "availability": false
+  },
+  {
+    "id": "1772981293.7653449",
+    "name": "Atharva",
+    "role": "Developer",
+    "availability": true
+  },
+  {
+    "id": "1772981293.7810495",
+    "name": "Bhagyashri",
+    "role": "QA Engineer",
+    "availability": true
   }
 ]

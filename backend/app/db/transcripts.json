@@ -7,5 +7,14 @@
     "tasks_extracted": 6,
     "created_at": "2026-03-08T19:21:23.995453",
     "length": 1286
+  },
+  {
+    "id": "1b36a80a-ec03-4f82-b477-ad041d10524d",
+    "project_id": "e9b3031b",
+    "project_name": "Jadenova",
+    "content": "Kuppili Murty will ask Ash to send the drafted and changed email that should be triggered from the Java admin, and post the prepared content in the j noa integration chat group after the mail is triggered.\nKuppili Murty will follow up on the fourth part regarding volunteers required for the Jade Nova on the A part and talk to Chaitanya about finding a full-time senior resource for the AI project.\nBhagyashri Kolhe will mark the time based filter requirement for top 10 customer engagement as 'Cancelled' or 'On hold' because it was not implemented.\nBhagyashri Kolhe will check the backlog requirements, specifically the customer prospect requirement, and find the requirements for 'document management strategy' which was mentioned by Raja.\nPriyadarshani Kalbandhe and Atharv Botre will immediately remove the IP solutions category and related options from the activity submission area because it is a critical issue, first testing the changes on UAT and then implementing them on production.\nBhagyashri Kolhe, Atharv Botre, and Priyadarshani Kalbandhe will update the weekly pulse email template by (1) showing the last week's date range, (2) removing 'TL loops', (3) centering 'ID8 Solve', (4) increasing the size of the top box to keep 'so far' in one line, and (5) increasing the height and size for the bars in the five week trend section.\nThe group will implement a method to show the SL leader name in the list view, either in the next stage action column or a new column, to show who is the owner of the action for every status.\n",
+    "tasks_extracted": 11,
+    "created_at": "2026-03-08T20:18:22.080052",
+    "length": 1540
   }
 ]

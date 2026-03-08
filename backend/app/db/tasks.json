@@ -394,5 +394,126 @@
     "deadline": "2023-10-27",
     "created_at": "2026-03-08T19:21:23.986514",
     "updated_at": "2026-03-08T19:21:23.986514"
+  },
+  {
+    "id": "4eca0d25-736a-4c3d-91f8-32e2441b2f5c",
+    "title": "Ask Ash to send the drafted and changed email that should be triggered from the Java admin, and post the prepared content in the j noa integration chat group after the mail is triggered",
+    "owner_id": "1772981293.7653449",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:21.997434",
+    "updated_at": "2026-03-08T20:18:21.997434"
+  },
+  {
+    "id": "f00b010e-b5f9-42be-821d-fe60e0856123",
+    "title": "Follow up on the fourth part regarding volunteers required for the Jade Nova on the A part",
+    "owner_id": "1772981293.737211",
+    "owner_name": "Priyadarshani",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.004135",
+    "updated_at": "2026-03-08T20:18:22.004135"
+  },
+  {
+    "id": "d395ab67-4558-4fd1-9bb6-f2cb2e449da9",
+    "title": "Talk to Chaitanya about finding a full-time senior resource for the AI project",
+    "owner_id": "1772981293.737211",
+    "owner_name": "Priyadarshani",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.009964",
+    "updated_at": "2026-03-08T20:18:22.009964"
+  },
+  {
+    "id": "b873e6be-5dc8-451c-8536-c62873cdb410",
+    "title": "Mark the time based filter requirement for top 10 customer engagement as 'Cancelled' or 'On hold'",
+    "owner_id": "1772981293.737211",
+    "owner_name": "Priyadarshani",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.016956",
+    "updated_at": "2026-03-08T20:18:22.016956"
+  },
+  {
+    "id": "af36efd4-118b-4a27-81e0-333693289685",
+    "title": "Check the backlog requirements, specifically the customer prospect requirement",
+    "owner_id": "1772981293.7653449",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.023768",
+    "updated_at": "2026-03-08T20:18:22.023768"
+  },
+  {
+    "id": "d7a19ff4-05ad-4edc-a88b-de3e34aab6a5",
+    "title": "Find the requirements for 'document management strategy'",
+    "owner_id": "1772981293.7238464",
+    "owner_name": "Murthy",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.032082",
+    "updated_at": "2026-03-08T20:18:22.032082"
+  },
+  {
+    "id": "ace4ca05-b8f6-4948-beba-6de6a7fefb86",
+    "title": "Immediately remove the IP solutions category and related options from the activity submission area",
+    "owner_id": "1772981293.737211",
+    "owner_name": "Priyadarshani",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.039307",
+    "updated_at": "2026-03-08T20:18:22.039307"
+  },
+  {
+    "id": "8c450c5b-2c72-4f16-94af-45148956d82b",
+    "title": "Test the removal of IP solutions category and related options on UAT",
+    "owner_id": "1772981293.737211",
+    "owner_name": "Priyadarshani",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.047390",
+    "updated_at": "2026-03-08T20:18:22.047390"
+  },
+  {
+    "id": "1a0fcbd6-5cad-4f9c-8558-92d71c2f23fa",
+    "title": "Implement the removal of IP solutions category and related options on production",
+    "owner_id": "1772981293.7238464",
+    "owner_name": "Murthy",
+    "priority": "high",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.055147",
+    "updated_at": "2026-03-08T20:18:22.055147"
+  },
+  {
+    "id": "0afd12ad-3029-4866-a822-48f6647e4eec",
+    "title": "Update the weekly pulse email template by (1) showing the last week's date range, (2) removing 'TL loops', (3) centering 'ID8 Solve', (4) increasing the size of the top box to keep 'so far' in one line, and (5) increasing the height and size for the bars in the five week trend section",
+    "owner_id": "1772981293.7810495",
+    "owner_name": "Bhagyashri",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.062860",
+    "updated_at": "2026-03-08T20:18:22.062860"
+  },
+  {
+    "id": "0a8d6b5c-4936-4a86-be7e-977496afd1aa",
+    "title": "Implement a method to show the SL leader name in the list view, either in the next stage action column or a new column, to show who is the owner of the action for every status",
+    "owner_id": "1772981293.7653449",
+    "owner_name": "Atharva",
+    "priority": "medium",
+    "status": "todo",
+    "deadline": null,
+    "created_at": "2026-03-08T20:18:22.070764",
+    "updated_at": "2026-03-08T20:18:22.070764"
   }
 ]

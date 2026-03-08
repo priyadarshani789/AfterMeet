@@ -7,3 +7,38 @@ html, body, #root {
   margin: 0;
   padding: 0;
 }
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Platform layout utilities */
+@layer components {
+  .sidebar-item {
+    @apply transition-colors duration-200;
+  }
+
+  .platform-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+}

@@ -5,6 +5,8 @@ import ProjectList from './components/ProjectList';
 import ProjectCreation from './components/ProjectCreation';
 import TranscriptHistory from './components/TranscriptHistory';
 import GlobalTranscriptHistory from './components/GlobalTranscriptHistory';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import axios from 'axios';
 
 export default function App() {
@@ -59,8 +61,6 @@ export default function App() {
   };
 
   const handleCreateProject = (project) => {
-    // Project is already created by ProjectCreation component
-    // Just update the state and select it
     console.log('✅ Project ready:', project);
     setProjects([...projects, project]);
     setShowCreateProject(false);
@@ -71,25 +71,19 @@ export default function App() {
   const handleTasksExtracted = async () => {
     console.log('📥 Tasks extracted - refreshing project data...');
     
-    // Refresh Kanban board
     setRefreshKanban((prev) => prev + 1);
-    
-    // Refresh transcript history
     setRefreshTranscripts((prev) => prev + 1);
     
-    // Refresh project users when tasks are extracted
     if (selectedProject) {
       fetchProjectUsers(selectedProject.id);
     }
     
-    // Refresh project data to update task count in header AND projects list
     if (selectedProject) {
       try {
         const response = await axios.get(`http://localhost:8000/projects/${selectedProject.id}`);
         setSelectedProject(response.data);
         console.log('✅ Project data refreshed:', response.data);
         
-        // Also update the project in the projects array so the list shows updated counts
         setProjects(prevProjects =>
           prevProjects.map(p => p.id === selectedProject.id ? response.data : p)
         );
@@ -119,82 +113,127 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-7xl mx-auto py-8 px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 text-center mb-2">AfterMeet</h1>
-          <p className="text-center text-gray-600">
-            Convert meeting transcripts into actionable tasks automatically
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar */}
+      <Navbar />
 
-        {/* Project Selection or Creation */}
-        {!selectedProject ? (
-          <>
-            {showCreateProject ? (
-              <ProjectCreation 
-                onProjectCreated={handleCreateProject}
-                onCancel={() => setShowCreateProject(false)}
-              />
-            ) : (
-              <ProjectList
-                projects={projects}
-                onProjectSelected={handleProjectSelected}
-                onCreateProject={() => setShowCreateProject(true)}
-                onDeleteProject={handleDeleteProject}
-                loading={loading}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            {/* Project Header */}
-            <div className="mb-8 bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedProject.name}</h2>
-                  {selectedProject.description && (
-                    <p className="text-gray-600 mt-2">{selectedProject.description}</p>
-                  )}
-                  <div className="mt-4 flex gap-4 text-sm text-gray-600">
-                    <span>📊 Tasks: {selectedProject.tasks?.length || 0}</span>
-                    <span>👥 Team Members: {projectUsers.length}</span>
-                  </div>
+      {/* Main Layout with Sidebar */}
+      <div className="flex pt-16">
+        {/* Sidebar */}
+        <Sidebar
+          projects={projects}
+          selectedProject={selectedProject}
+          onProjectSelected={handleProjectSelected}
+          onCreateProject={() => setShowCreateProject(true)}
+          onDeleteProject={handleDeleteProject}
+          loading={loading}
+        />
+
+        {/* Main Content Area */}
+        <main className="flex-1 ml-64 transition-all">
+          {/* Project Selection or Creation */}
+          {!selectedProject ? (
+            <div className="p-8">
+              {showCreateProject ? (
+                <div className="max-w-4xl">
+                  <button
+                    onClick={() => setShowCreateProject(false)}
+                    className="mb-6 flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    ← Back to Projects
+                  </button>
+                  <ProjectCreation 
+                    onProjectCreated={handleCreateProject}
+                    onCancel={() => setShowCreateProject(false)}
+                  />
                 </div>
-                <button
-                  onClick={() => setSelectedProject(null)}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium"
-                >
-                  ← Back to Projects
-                </button>
+              ) : (
+                <>
+                  {/* Welcome Section */}
+                  <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome to AfterMeet</h2>
+                    <p className="text-gray-600">
+                      Convert meeting transcripts into actionable tasks automatically
+                    </p>
+                  </div>
+
+                  {/* Projects Grid */}
+                  <ProjectList
+                    projects={projects}
+                    onProjectSelected={handleProjectSelected}
+                    onCreateProject={() => setShowCreateProject(true)}
+                    onDeleteProject={handleDeleteProject}
+                    loading={loading}
+                  />
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="p-8">
+              {/* Project Content */}
+              <div className="mb-8">
+                {/* Project Header */}
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">{selectedProject.name}</h2>
+                    {selectedProject.description && (
+                      <p className="text-gray-600 mt-2">{selectedProject.description}</p>
+                    )}
+                    <div className="mt-4 flex gap-6 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">📊</span>
+                        <div>
+                          <p className="text-gray-500 text-xs">Tasks</p>
+                          <p className="font-bold text-gray-900">{selectedProject.tasks?.length || 0}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">👥</span>
+                        <div>
+                          <p className="text-gray-500 text-xs">Team Members</p>
+                          <p className="font-bold text-gray-900">{projectUsers.length}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-medium transition"
+                  >
+                    ← Back
+                  </button>
+                </div>
+              </div>
+
+              {/* Task Form */}
+              <div className="mb-8">
+                <TaskForm 
+                  onTasksExtracted={handleTasksExtracted}
+                  projectId={selectedProject.id}
+                />
+              </div>
+
+              {/* Kanban Board */}
+              <div className="mb-8">
+                <KanbanBoard 
+                  refreshTrigger={refreshKanban} 
+                  users={projectUsers}
+                  projectId={selectedProject.id}
+                />
+              </div>
+
+              {/* Transcript History */}
+              <div className="mb-8">
+                <TranscriptHistory projectId={selectedProject.id} refreshTrigger={refreshTranscripts} />
               </div>
             </div>
+          )}
 
-            {/* Task Form */}
-            <TaskForm 
-              onTasksExtracted={handleTasksExtracted}
-              projectId={selectedProject.id}
-            />
-
-            {/* Kanban Board */}
-            <KanbanBoard 
-              refreshTrigger={refreshKanban} 
-              users={projectUsers}
-              projectId={selectedProject.id}
-            />
-
-            {/* Transcript History */}
-            <div className="mt-8">
-              <TranscriptHistory projectId={selectedProject.id} refreshTrigger={refreshTranscripts} />
-            </div>
-          </>
-        )}
-
-        {/* Global Transcript Database - Always Visible */}
-        <div className="mt-12 border-t-2 border-gray-300 pt-8">
-          <GlobalTranscriptHistory onSelectProject={handleSelectProjectFromTranscript} />
-        </div>
+          {/* Global Transcript Database */}
+          <div className="px-8 pb-8 border-t border-gray-200 mt-12 pt-8">
+            <GlobalTranscriptHistory onSelectProject={handleSelectProjectFromTranscript} />
+          </div>
+        </main>
       </div>
     </div>
   );
