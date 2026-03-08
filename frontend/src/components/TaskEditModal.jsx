@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { updateTask } from '../utils/api';
+import axios from 'axios';
 
-export default function TaskEditModal({ task, users = [], onClose, onSave }) {
+export default function TaskEditModal({ task, users = [], onClose, onSave, projectId = null }) {
   const [formData, setFormData] = useState({
     title: '',
     owner_id: '',
@@ -11,6 +11,7 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
     deadline: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (task) {
@@ -42,14 +43,20 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
-      await updateTask(task.id, formData);
+      const endpoint = projectId
+        ? `http://localhost:8000/projects/${projectId}/tasks/${task.id}`
+        : `http://localhost:8000/tasks/${task.id}`;
+      
+      await axios.put(endpoint, formData);
+      console.log('✅ Task updated successfully');
       onSave();
       onClose();
-    } catch (error) {
-      console.error('Error updating task:', error);
-      alert('Failed to update task');
+    } catch (err) {
+      console.error('❌ Error updating task:', err);
+      setError(err.response?.data?.detail || 'Failed to update task');
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +67,7 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg max-w-md w-full mx-4 p-6 shadow-lg">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Edit Task</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">✏️ Edit Task</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -72,15 +79,17 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              disabled={isLoading}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">👤 Assign To</label>
             <select
               value={formData.owner_id}
               onChange={handleOwnerChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
             >
               <option value="">Unassigned</option>
               {users.map((user) => (
@@ -93,12 +102,13 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">🎯 Priority</label>
               <select
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -107,12 +117,13 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">📋 Status</label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
               >
                 <option value="todo">To Do</option>
                 <option value="in_progress">In Progress</option>
@@ -122,21 +133,29 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">📅 Deadline</label>
             <input
               type="date"
               name="deadline"
               value={formData.deadline}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={isLoading}
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          {error && (
+            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+              ⚠️ {error}
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4 border-t">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50"
+              disabled={isLoading}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 disabled:opacity-50"
             >
               Cancel
             </button>
@@ -146,10 +165,10 @@ export default function TaskEditModal({ task, users = [], onClose, onSave }) {
               className={`flex-1 px-4 py-2 rounded-lg font-medium text-white transition-colors ${
                 isLoading
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                  : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
               }`}
             >
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              {isLoading ? '💾 Saving...' : '✅ Save Changes'}
             </button>
           </div>
         </form>

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class User(BaseModel):
@@ -36,3 +36,20 @@ class TaskUpdate(BaseModel):
     priority: Optional[str] = None
     status: Optional[str] = None
     deadline: Optional[str] = None
+
+class Project(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.now)
+    updated_at: datetime = Field(default_factory=datetime.now)
+    tasks: List[dict] = Field(default_factory=list)
+    users: List[dict] = Field(default_factory=list)
+
+class ProjectCreateRequest(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class ProjectTranscriptRequest(BaseModel):
+    transcript: str
+    owner_id: Optional[str] = None

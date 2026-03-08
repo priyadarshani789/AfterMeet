@@ -8,12 +8,20 @@ import random
 logger = logging.getLogger(__name__)
 
 
-def auto_assign_owner(mentioned_name: Optional[str] = None) -> tuple[Optional[str], Optional[str]]:
+def auto_assign_owner(mentioned_name: Optional[str] = None, available_users: Optional[List[Dict]] = None) -> tuple[Optional[str], Optional[str]]:
     """
     Auto-assign task owner based on mentioned name or random selection.
     Returns tuple of (owner_id, owner_name)
+    
+    Args:
+        mentioned_name: Name to search for in users
+        available_users: List of users to choose from. If None, uses global users.
     """
-    users = get_users()
+    # Use provided users or get from global list
+    if available_users is None:
+        users = get_users()
+    else:
+        users = available_users
     
     if not users:
         return None, None
@@ -35,11 +43,12 @@ def create_task_from_extracted_data(
     owner_name: Optional[str] = None,
     priority: str = "medium",
     deadline: Optional[str] = None,
-    status: str = "todo"
+    status: str = "todo",
+    available_users: Optional[List[Dict]] = None
 ) -> Dict:
     """Create a task object with auto-assignment if needed"""
     
-    owner_id, assigned_owner_name = auto_assign_owner(owner_name)
+    owner_id, assigned_owner_name = auto_assign_owner(owner_name, available_users)
     
     now = datetime.now().isoformat()
     task = {
@@ -59,11 +68,17 @@ def create_task_from_extracted_data(
 
 def process_and_save_tasks(
     extracted_tasks: List[Dict],
-    default_owner_id: Optional[str] = None
+    default_owner_id: Optional[str] = None,
+    available_users: Optional[List[Dict]] = None
 ) -> List[Dict]:
     """
     Process extracted tasks and save them to database.
     Apply auto-assignment logic.
+    
+    Args:
+        extracted_tasks: List of tasks from AI extraction
+        default_owner_id: Default owner if not found
+        available_users: List of users to choose from for assignment. If None, uses global users.
     """
     saved_tasks = []
     
@@ -74,7 +89,8 @@ def process_and_save_tasks(
             owner_name=task_data.get("owner", default_owner_id),
             priority=task_data.get("priority", "medium"),
             deadline=task_data.get("deadline"),
-            status="todo"
+            status="todo",
+            available_users=available_users
         )
         
         # Save to database

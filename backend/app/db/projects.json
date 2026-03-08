@@ -1,0 +1,197 @@
+[
+  {
+    "id": "5200f2d4",
+    "name": "TaskFlow",
+    "description": "",
+    "created_at": "2026-03-08T18:45:42.799231",
+    "updated_at": "2026-03-08T18:52:03.315697",
+    "tasks": [
+      {
+        "id": "1361cfdb-9507-4c9c-8c04-c897be61ac7d",
+        "title": "Complete the database optimization and deploy the updated API version",
+        "owner_id": "1772975795.483455",
+        "owner_name": "Rohan Gupta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2024-05-22",
+        "created_at": "2026-03-08T18:46:55.713962",
+        "updated_at": "2026-03-08T18:46:55.713962"
+      },
+      {
+        "id": "9ede6e0a-7163-4e47-9861-d7128430727e",
+        "title": "Implement the task list UI and finish the API integration",
+        "owner_id": "1772975795.4929204",
+        "owner_name": "Sneha Deshmukh",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2024-05-24",
+        "created_at": "2026-03-08T18:46:55.720560",
+        "updated_at": "2026-03-08T18:46:55.720560"
+      },
+      {
+        "id": "1138d833-2e3c-498b-b1e5-162a370113bb",
+        "title": "Configure the CI/CD pipeline for automatic deployment to the staging server",
+        "owner_id": "1772975795.5034661",
+        "owner_name": "Karan Mehta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:46:55.725905",
+        "updated_at": "2026-03-08T18:46:55.725905"
+      },
+      {
+        "id": "b0025dfd-f95d-427e-b5b3-8370e1ec7bce",
+        "title": "Start testing the dashboard feature and prepare a detailed bug report",
+        "owner_id": "1772975795.5122578",
+        "owner_name": "Meera Joshi",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:46:55.731303",
+        "updated_at": "2026-03-08T18:46:55.731303"
+      },
+      {
+        "id": "ae23aff0-7a6a-4efa-a6d4-4a6a93c3772e",
+        "title": "Prepare the API documentation and share it with the team",
+        "owner_id": "1772975795.483455",
+        "owner_name": "Rohan Gupta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2024-05-23",
+        "created_at": "2026-03-08T18:46:55.737385",
+        "updated_at": "2026-03-08T18:46:55.737385"
+      },
+      {
+        "id": "13cba161-2fc7-4351-976d-8f8ac4e052f8",
+        "title": "Finish the API endpoints for notifications and push the code to the repository",
+        "owner_id": "1772975795.483455",
+        "owner_name": "Rohan Gupta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:52:03.205114",
+        "updated_at": "2026-03-08T18:52:03.205114"
+      },
+      {
+        "id": "e85d3453-bf74-4475-8eed-a589d8dbe7c7",
+        "title": "Add the notification panel in the dashboard",
+        "owner_id": "1772975795.4929204",
+        "owner_name": "Sneha Deshmukh",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:52:03.210603",
+        "updated_at": "2026-03-08T18:52:03.210603"
+      },
+      {
+        "id": "d40f71ee-79f3-4dfe-900f-a518bf850ffc",
+        "title": "Design the notification component and integrate it with the backend API",
+        "owner_id": "1772975795.4929204",
+        "owner_name": "Sneha Deshmukh",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2023-12-22",
+        "created_at": "2026-03-08T18:52:03.215456",
+        "updated_at": "2026-03-08T18:52:03.215456"
+      },
+      {
+        "id": "dd514b48-7790-490c-99ac-3ffd122370e8",
+        "title": "Configure the email notification service",
+        "owner_id": "1772975795.5034661",
+        "owner_name": "Karan Mehta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:52:03.221168",
+        "updated_at": "2026-03-08T18:52:03.221168"
+      },
+      {
+        "id": "c0cba303-43f7-409a-8be0-a975a0ba0f3c",
+        "title": "Connect the email service to our staging environment",
+        "owner_id": "1772975795.5034661",
+        "owner_name": "Karan Mehta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2023-12-22",
+        "created_at": "2026-03-08T18:52:03.225139",
+        "updated_at": "2026-03-08T18:52:03.225139"
+      },
+      {
+        "id": "d07d5708-88c2-4da6-be00-234c867b2acd",
+        "title": "Test both the dashboard notifications and email alerts",
+        "owner_id": "1772975795.5122578",
+        "owner_name": "Meera Joshi",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-08T18:52:03.229924",
+        "updated_at": "2026-03-08T18:52:03.229924"
+      },
+      {
+        "id": "9d4007c2-7326-40f3-89e1-69207076bc20",
+        "title": "Prepare the documentation for the notification API and upload it to the project repository",
+        "owner_id": "1772975795.483455",
+        "owner_name": "Rohan Gupta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2023-12-22",
+        "created_at": "2026-03-08T18:52:03.234098",
+        "updated_at": "2026-03-08T18:52:03.234098"
+      },
+      {
+        "id": "b99b6648-278d-4c6d-b921-ba873e784f2b",
+        "title": "Add API documentation along with usage examples",
+        "owner_id": "1772975795.483455",
+        "owner_name": "Rohan Gupta",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": "2023-12-22",
+        "created_at": "2026-03-08T18:52:03.241959",
+        "updated_at": "2026-03-08T18:52:03.241959"
+      }
+    ],
+    "users": [
+      {
+        "id": "1772975795.4680896",
+        "name": "Priya Nair",
+        "role": "Product Manager"
+      },
+      {
+        "id": "1772975795.483455",
+        "name": "Rohan Gupta",
+        "role": "Developer"
+      },
+      {
+        "id": "1772975795.4929204",
+        "name": "Sneha Deshmukh",
+        "role": "Developer"
+      },
+      {
+        "id": "1772975795.5034661",
+        "name": "Karan Mehta",
+        "role": "Other"
+      },
+      {
+        "id": "1772975795.5122578",
+        "name": "Meera Joshi",
+        "role": "QA Engineer"
+      }
+    ],
+    "transcripts": [
+      {
+        "id": "3da6294a-623d-4a85-910f-2a9bcb1e5d81",
+        "content": "Priya: Good morning everyone. Let's review the progress on the TaskFlow project. Our main goal this week is to complete the task dashboard feature.\n\nRohan: The backend APIs for task management are almost ready. I will complete the database optimization and deploy the updated API version by Wednesday.\n\nPriya: Great. Sneha, once the APIs are ready, please connect them to the frontend dashboard so users can view and update tasks easily.\n\nSneha: Sure. I will implement the task list UI and finish the API integration by Friday.\n\nKaran: I will also configure the CI/CD pipeline so that every new update is automatically deployed to the staging server.\n\nMeera: After the deployment is ready, I will start testing the dashboard feature and prepare a detailed bug report.\n\nPriya: Good plan. We also need documentation for the new APIs. Rohan, please prepare the API documentation and share it with the team by Thursday.\n\nRohan: No problem, I will upload the documentation to the project repository.\n\nPriya: Perfect. Let’s try to finish these tasks before the next sprint review meeting.\n",
+        "tasks_extracted": 5,
+        "created_at": "2026-03-08T18:46:55.744787",
+        "length": 1083
+      },
+      {
+        "id": "0cb57271-76ca-4dd9-9d2e-2b764e944e33",
+        "content": "Priya: Good morning everyone. Today we need to discuss progress on the notification system for the TaskFlow platform.\n\nRohan: I have already started working on the backend service for sending task reminders. I will finish the API endpoints for notifications and push the code to the repository by Thursday.\n\nPriya: That sounds good. Sneha, once Rohan completes the API, please add the notification panel in the dashboard so users can see reminders for their tasks.\n\nSneha: Sure. I will design the notification component and integrate it with the backend API by Friday.\n\nKaran: I will also configure the email notification service so that users receive reminders for upcoming deadlines.\n\nPriya: Great. Please make sure the email service is connected to our staging environment before the end of the week.\n\nMeera: After the notification feature is ready, I will test both the dashboard notifications and email alerts to make sure everything works properly.\n\nPriya: Perfect. Also, we need documentation for the notification API. Rohan, please prepare the documentation and upload it to the project repository by Friday.\n\nRohan: Okay, I will add the API documentation along with usage examples.\n\nPriya: Excellent. Let’s try to complete all these tasks before the next sprint review meeting.\n\n",
+        "tasks_extracted": 8,
+        "created_at": "2026-03-08T18:52:03.248434",
+        "length": 1288
+      }
+    ]
+  }
+]

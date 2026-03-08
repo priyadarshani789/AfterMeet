@@ -3,10 +3,13 @@ import os
 from pathlib import Path
 from typing import Any, List, Dict
 import asyncio
+from datetime import datetime
+import uuid
 
 DB_PATH = Path(__file__).parent.parent / "db"
 USERS_FILE = DB_PATH / "users.json"
 TASKS_FILE = DB_PATH / "tasks.json"
+PROJECTS_FILE = DB_PATH / "projects.json"
 
 
 def ensure_db_exists():
@@ -24,19 +27,24 @@ def ensure_db_exists():
     
     if not TASKS_FILE.exists():
         write_json(TASKS_FILE, [])
+    
+    if not PROJECTS_FILE.exists():
+        write_json(PROJECTS_FILE, [])
 
 
 def read_json(filepath: Path) -> Any:
     """Read JSON file with error handling"""
     try:
         if not filepath.exists():
-            return [] if "tasks" in str(filepath) else {}
+            return []
         
-        with open(filepath, 'r', encoding='utf-8') as f:
-            return json.load(f)
+        with open(filepath, 'r', encoding='utf-8-sig') as f:
+            data = json.load(f)
+            # Ensure we always return a list for data files
+            return data if isinstance(data, list) else []
     except Exception as e:
         print(f"Error reading {filepath}: {e}")
-        return [] if "tasks" in str(filepath) else {}
+        return []
 
 
 def write_json(filepath: Path, data: Any) -> bool:
@@ -70,6 +78,24 @@ def add_task(task_data: Dict) -> Dict:
     tasks.append(task_data)
     write_json(TASKS_FILE, tasks)
     return task_data
+
+
+def add_user(user_data: Dict) -> Dict:
+    """Add a new user to global users list (if not already exists)"""
+    ensure_db_exists()
+    users = get_users()
+    
+    # Check if user already exists by name
+    existing_user = next((u for u in users if u.get("name", "").lower() == user_data.get("name", "").lower()), None)
+    if not existing_user:
+        # Assign ID if not provided
+        if "id" not in user_data:
+            user_data["id"] = str(len(users) + 1)
+        users.append(user_data)
+        write_json(USERS_FILE, users)
+        return user_data
+    
+    return existing_user
 
 
 def update_task(task_id: str, updates: Dict) -> Dict:
@@ -107,3 +133,175 @@ def get_task_by_id(task_id: str) -> Dict:
 
 
 from datetime import datetime
+
+
+# ==================== PROJECT MANAGEMENT ====================
+
+def get_projects() -> List[Dict]:
+    """Get all projects"""
+    ensure_db_exists()
+    return read_json(PROJECTS_FILE)
+
+
+def create_project(name: str, description: str = None) -> Dict:
+    """Create a new project"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    project_id = str(uuid.uuid4())[:8]
+    new_project = {
+        "id": project_id,
+        "name": name,
+        "description": description or "",
+        "created_at": datetime.now().isoformat(),
+        "updated_at": datetime.now().isoformat(),
+        "tasks": [],
+        "users": []
+    }
+    
+    projects.append(new_project)
+    write_json(PROJECTS_FILE, projects)
+    return new_project
+
+
+def get_project(project_id: str) -> Dict:
+    """Get a specific project by ID"""
+    projects = get_projects()
+    for project in projects:
+        if project["id"] == project_id:
+            return project
+    raise ValueError(f"Project {project_id} not found")
+
+
+def delete_project(project_id: str) -> bool:
+    """Delete a project"""
+    ensure_db_exists()
+    projects = get_projects()
+    original_len = len(projects)
+    projects = [p for p in projects if p["id"] != project_id]
+    write_json(PROJECTS_FILE, projects)
+    return len(projects) < original_len
+
+
+def add_task_to_project(project_id: str, task_data: Dict) -> Dict:
+    """Add a task to a specific project"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    for i, project in enumerate(projects):
+        if project["id"] == project_id:
+            projects[i]["tasks"].append(task_data)
+            projects[i]["updated_at"] = datetime.now().isoformat()
+            write_json(PROJECTS_FILE, projects)
+            return task_data
+    
+    raise ValueError(f"Project {project_id} not found")
+
+
+def get_project_tasks(project_id: str) -> List[Dict]:
+    """Get all tasks in a project"""
+    project = get_project(project_id)
+    return project.get("tasks", [])
+
+
+def get_project_users(project_id: str) -> List[Dict]:
+    """Get all users in a project"""
+    project = get_project(project_id)
+    return project.get("users", [])
+
+
+def add_user_to_project(project_id: str, user_data: Dict) -> Dict:
+    """Add a user to a project (extracted from transcript)"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    for i, project in enumerate(projects):
+        if project["id"] == project_id:
+            # Check if user already exists in project
+            existing_user = next((u for u in project["users"] if u.get("name") == user_data.get("name")), None)
+            if not existing_user:
+                # Add to project
+                projects[i]["users"].append(user_data)
+                projects[i]["updated_at"] = datetime.now().isoformat()
+                write_json(PROJECTS_FILE, projects)
+                
+                # Also add to global users.json
+                try:
+                    add_user(user_data)
+                except Exception as e:
+                    print(f"Warning: Failed to add user to global users.json: {e}")
+            
+            return user_data
+    
+    raise ValueError(f"Project {project_id} not found")
+
+
+def update_project_task(project_id: str, task_id: str, updates: Dict) -> Dict:
+    """Update a task in a project"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    for i, project in enumerate(projects):
+        if project["id"] == project_id:
+            for j, task in enumerate(project["tasks"]):
+                if task["id"] == task_id:
+                    project["tasks"][j].update(updates)
+                    project["tasks"][j]["updated_at"] = datetime.now().isoformat()
+                    projects[i]["updated_at"] = datetime.now().isoformat()
+                    write_json(PROJECTS_FILE, projects)
+                    return project["tasks"][j]
+            raise ValueError(f"Task {task_id} not found in project")
+    
+    raise ValueError(f"Project {project_id} not found")
+
+
+def delete_project_task(project_id: str, task_id: str) -> bool:
+    """Delete a task from a project"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    for i, project in enumerate(projects):
+        if project["id"] == project_id:
+            original_len = len(project["tasks"])
+            project["tasks"] = [t for t in project["tasks"] if t["id"] != task_id]
+            if len(project["tasks"]) < original_len:
+                projects[i]["updated_at"] = datetime.now().isoformat()
+                write_json(PROJECTS_FILE, projects)
+                return True
+            return False
+    
+    raise ValueError(f"Project {project_id} not found")
+
+
+def store_transcript_in_project(project_id: str, transcript: str, tasks_extracted: int = 0) -> Dict:
+    """Store transcript in project history"""
+    ensure_db_exists()
+    projects = get_projects()
+    
+    for i, project in enumerate(projects):
+        if project["id"] == project_id:
+            # Initialize transcripts array if it doesn't exist
+            if "transcripts" not in project:
+                project["transcripts"] = []
+            
+            # Create transcript record with metadata
+            transcript_record = {
+                "id": str(uuid.uuid4()),
+                "content": transcript,
+                "tasks_extracted": tasks_extracted,
+                "created_at": datetime.now().isoformat(),
+                "length": len(transcript)
+            }
+            
+            project["transcripts"].append(transcript_record)
+            projects[i]["updated_at"] = datetime.now().isoformat()
+            write_json(PROJECTS_FILE, projects)
+            return transcript_record
+    
+    raise ValueError(f"Project {project_id} not found")
+
+
+def get_project_transcripts(project_id: str) -> List[Dict]:
+    """Get all transcripts for a project"""
+    project = get_project(project_id)
+    return project.get("transcripts", [])
