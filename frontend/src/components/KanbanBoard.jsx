@@ -112,6 +112,7 @@ export default function KanbanBoard({ refreshTrigger, users = [], projectId = nu
                   onEdit={handleEditTask}
                   projectId={projectId}
                   onDelete={loadTasks}
+                  onStatusChange={loadTasks}
                 />
               ))}
               {groupedTasks.todo.length === 0 && (
@@ -134,6 +135,7 @@ export default function KanbanBoard({ refreshTrigger, users = [], projectId = nu
                   onEdit={handleEditTask}
                   projectId={projectId}
                   onDelete={loadTasks}
+                  onStatusChange={loadTasks}
                 />
               ))}
               {groupedTasks.in_progress.length === 0 && (
@@ -156,6 +158,7 @@ export default function KanbanBoard({ refreshTrigger, users = [], projectId = nu
                   onEdit={handleEditTask}
                   projectId={projectId}
                   onDelete={loadTasks}
+                  onStatusChange={loadTasks}
                 />
               ))}
               {groupedTasks.done.length === 0 && (

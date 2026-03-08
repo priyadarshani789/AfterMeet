@@ -205,7 +205,12 @@ def add_task_to_project(project_id: str, task_data: Dict) -> Dict:
 def get_project_tasks(project_id: str) -> List[Dict]:
     """Get all tasks in a project"""
     project = get_project(project_id)
-    return project.get("tasks", [])
+    tasks = project.get("tasks", [])
+    # Ensure all tasks have a status field (default to 'todo' for backwards compatibility)
+    for task in tasks:
+        if "status" not in task:
+            task["status"] = "todo"
+    return tasks
 
 
 def get_project_users(project_id: str) -> List[Dict]:

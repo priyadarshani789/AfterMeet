@@ -4,7 +4,7 @@
     "name": "TaskFlow",
     "description": "",
     "created_at": "2026-03-08T19:19:38.974781",
-    "updated_at": "2026-03-08T19:21:24.037036",
+    "updated_at": "2026-03-08T21:26:24.886540",
     "tasks": [
       {
         "id": "2fc9b732-23be-4437-9048-8d255910cc87",
@@ -12,10 +12,10 @@
         "owner_id": "1772977852.8574786",
         "owner_name": "Rohan Gupta",
         "priority": "medium",
-        "status": "todo",
+        "status": "done",
         "deadline": null,
         "created_at": "2026-03-08T19:21:23.952403",
-        "updated_at": "2026-03-08T19:21:23.952403"
+        "updated_at": "2026-03-08T21:23:13.370966"
       },
       {
         "id": "278c3888-7580-4b15-a67b-10a1b770d91c",
@@ -23,10 +23,10 @@
         "owner_id": "1772977852.8700953",
         "owner_name": "Sneha Deshmukh",
         "priority": "medium",
-        "status": "todo",
+        "status": "in_progress",
         "deadline": "2023-10-27",
         "created_at": "2026-03-08T19:21:23.959798",
-        "updated_at": "2026-03-08T19:21:23.959798"
+        "updated_at": "2026-03-08T21:26:15.924444"
       },
       {
         "id": "44a2e4f6-9213-4bda-87e3-8e8858c01783",
@@ -34,10 +34,10 @@
         "owner_id": "1772977852.9313986",
         "owner_name": "Karan Mehta",
         "priority": "medium",
-        "status": "todo",
+        "status": "in_progress",
         "deadline": null,
         "created_at": "2026-03-08T19:21:23.965090",
-        "updated_at": "2026-03-08T19:21:23.965090"
+        "updated_at": "2026-03-08T21:23:23.141326"
       },
       {
         "id": "9e84d1f0-53db-4708-8bfd-d628bbe372a4",
@@ -45,10 +45,10 @@
         "owner_id": "1772977852.9313986",
         "owner_name": "Karan Mehta",
         "priority": "medium",
-        "status": "todo",
+        "status": "in_progress",
         "deadline": "2023-10-27",
         "created_at": "2026-03-08T19:21:23.971242",
-        "updated_at": "2026-03-08T19:21:23.971242"
+        "updated_at": "2026-03-08T21:26:24.886525"
       },
       {
         "id": "f47addb3-9a39-40cd-8871-707a8c29d7c7",
@@ -56,10 +56,10 @@
         "owner_id": "1772977852.8863072",
         "owner_name": "Priya Nair",
         "priority": "medium",
-        "status": "todo",
+        "status": "in_progress",
         "deadline": null,
         "created_at": "2026-03-08T19:21:23.978786",
-        "updated_at": "2026-03-08T19:21:23.978786"
+        "updated_at": "2026-03-08T21:26:18.025358"
       },
       {
         "id": "241a0625-e675-4838-a8a1-81bd9afd8bb6",

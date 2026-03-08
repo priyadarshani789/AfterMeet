@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export default function TaskCard({ task, onEdit, projectId = null, onDelete = null }) {
+export default function TaskCard({ task, onEdit, projectId = null, onDelete = null, onStatusChange = null }) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
   const priorityColors = {
     high: 'bg-red-100 text-red-800 border-red-300',
@@ -47,6 +48,86 @@ export default function TaskCard({ task, onEdit, projectId = null, onDelete = nu
     }
   };
 
+  const handleStatusChange = async (e, newStatus) => {
+    e.stopPropagation();
+    setIsUpdatingStatus(true);
+
+    try {
+      const endpoint = projectId
+        ? `http://localhost:8000/projects/${projectId}/tasks/${task.id}`
+        : `http://localhost:8000/tasks/${task.id}`;
+      
+      console.log(`📝 Updating task status to: ${newStatus}`);
+      await axios.put(endpoint, { status: newStatus });
+      console.log('✅ Task status updated successfully');
+      
+      if (onStatusChange) {
+        onStatusChange();
+      }
+    } catch (error) {
+      console.error('❌ Error updating task status:', error);
+      alert('Failed to update task: ' + (error.response?.data?.detail || error.message));
+    } finally {
+      setIsUpdatingStatus(false);
+    }
+  };
+
+  const getStatusButtons = () => {
+    const buttons = [];
+    const currentStatus = task.status || 'todo';
+
+    if (currentStatus === 'todo') {
+      buttons.push(
+        <button
+          key="start"
+          onClick={(e) => handleStatusChange(e, 'in_progress')}
+          disabled={isUpdatingStatus}
+          className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 disabled:opacity-50 transition"
+          title="Move to In Progress"
+        >
+          {isUpdatingStatus ? '⏳' : '→ Start'}
+        </button>
+      );
+    } else if (currentStatus === 'in_progress') {
+      buttons.push(
+        <button
+          key="back"
+          onClick={(e) => handleStatusChange(e, 'todo')}
+          disabled={isUpdatingStatus}
+          className="px-2 py-1 bg-gray-500 text-white text-xs rounded hover:bg-gray-600 disabled:opacity-50 transition"
+          title="Move back to To Do"
+        >
+          {isUpdatingStatus ? '⏳' : '← Back'}
+        </button>
+      );
+      buttons.push(
+        <button
+          key="done"
+          onClick={(e) => handleStatusChange(e, 'done')}
+          disabled={isUpdatingStatus}
+          className="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 disabled:opacity-50 transition"
+          title="Mark as Done"
+        >
+          {isUpdatingStatus ? '⏳' : '✅ Done'}
+        </button>
+      );
+    } else if (currentStatus === 'done') {
+      buttons.push(
+        <button
+          key="reopen"
+          onClick={(e) => handleStatusChange(e, 'in_progress')}
+          disabled={isUpdatingStatus}
+          className="px-2 py-1 bg-yellow-500 text-white text-xs rounded hover:bg-yellow-600 disabled:opacity-50 transition"
+          title="Reopen task"
+        >
+          {isUpdatingStatus ? '⏳' : '↩️ Reopen'}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
+
   return (
     <div
       onClick={() => onEdit(task)}
@@ -75,7 +156,7 @@ export default function TaskCard({ task, onEdit, projectId = null, onDelete = nu
         )}
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-2">
         <span
           className={`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${
             priorityColors[task.priority] || priorityColors.low
@@ -84,9 +165,11 @@ export default function TaskCard({ task, onEdit, projectId = null, onDelete = nu
           {priorityEmoji[task.priority] || priorityEmoji.low}
           {task.priority?.charAt(0).toUpperCase() + task.priority?.slice(1) || 'Low'}
         </span>
-        <span className="text-xs text-gray-500">
-          Click to edit
-        </span>
+      </div>
+
+      {/* Status Movement Buttons */}
+      <div className="flex gap-1 mt-3 flex-wrap">
+        {getStatusButtons()}
       </div>
     </div>
   );

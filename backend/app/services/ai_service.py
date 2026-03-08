@@ -252,10 +252,11 @@ Return only the JSON array.
                     "title": task.get("title", "Untitled Task"),
                     "owner": task.get("owner"),
                     "priority": task.get("priority", "medium").lower(),
-                    "deadline": task.get("deadline")
+                    "deadline": task.get("deadline"),
+                    "status": "todo"
                 }
                 formatted_tasks.append(formatted_task)
-                logger.info(f"[GEMINI CALL #{current_call_id}] Task {idx+1}: {formatted_task['title'][:50]} | Owner: {formatted_task['owner']} | Priority: {formatted_task['priority']}")
+                logger.info(f"[GEMINI CALL #{current_call_id}] Task {idx+1}: {formatted_task['title'][:50]} | Owner: {formatted_task['owner']} | Priority: {formatted_task['priority']} | Status: {formatted_task['status']}")
 
         logger.warning(f"[GEMINI CALL #{current_call_id}] ✅ Extracted {len(formatted_tasks)} tasks. Concurrent calls now: {concurrent_calls - 1}")
         concurrent_calls -= 1
@@ -326,7 +327,8 @@ JSON array only:"""
                     "title": task.get("title", "Untitled Task"),
                     "owner": task.get("owner"),
                     "priority": task.get("priority", "medium").lower(),
-                    "deadline": task.get("deadline")
+                    "deadline": task.get("deadline"),
+                    "status": "todo"
                 })
 
         logger.info(f"Extracted {len(formatted_tasks)} tasks from Azure OpenAI")
@@ -356,7 +358,8 @@ def _parse_text_tasks(text: str) -> List[Dict]:
                 "title": title,
                 "owner": owner,
                 "priority": priority.lower(),
-                "deadline": None
+                "deadline": None,
+                "status": "todo"
             })
     
     logger.info(f"Text parsing found {len(tasks)} tasks")
