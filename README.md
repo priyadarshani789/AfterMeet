@@ -351,14 +351,21 @@ npm run build
 - ⚡ Batch transcript processing
 - 🧠 Learn from past extractions (ML-based suggestions)
 
-## License
+## Overview
+## Create Project
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/22b4fb66-21f8-4cf0-9b76-a48d8237b2f8" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/16db1dc4-96c8-440a-8358-7df22ac98ae2" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4c222af4-0cd2-4625-8c5d-f57a1bbc052d" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/144f60f4-8849-4d14-988c-fb7cc19276c9" />
+## Transcript History
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/12e76657-7679-4c99-8633-5c29f5274056" />
 
-This project is open source and available for educational and commercial use.
+## Upload Transcript
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f9f2ab38-f51c-45d2-840c-d60232a65eb2" />
 
-## Support & Contributing
+## Kanban Board
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/7b59b60d-f2bd-4216-a7f9-273b6b808f4f" />
 
-For issues, feature requests, or contributions:
-1. Check existing documentation
-2. Review troubleshooting section
-3. Check browser console for error details
-4. Share backend logs when reporting issues
+
+
+
