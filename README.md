@@ -216,8 +216,6 @@ GEMINI_API_KEY=your_api_key_from_https://ai.google.dev/
 GEMINI_PROJECT_ID=projects/your_project_id
 ```
 
-     ```
-
 ## How It Works
 
 ### Task Extraction Flow
@@ -230,26 +228,12 @@ GEMINI_PROJECT_ID=projects/your_project_id
 7. Tasks saved to `backend/app/db/tasks.json`
 8. Frontend refreshes Kanban board with new tasks
 
-## Future Enhancements
-
-- 📦 File upload support (.txt, .docx, .pdf, audio files)
-- 🔐 User authentication and multi-user support
-- 🗄️ Database migration (PostgreSQL/MongoDB)
-- 📊 Analytics dashboard and reporting
-- 🔔 Task reminders and notifications
-- 🌐 Multi-language support
-- 🎨 Custom themes and UI personalization
-- ⚡ Batch transcript processing
-- 🧠 Learn from past extractions (ML-based suggestions)
-
 ## Overview
 ## Create Project
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/22b4fb66-21f8-4cf0-9b76-a48d8237b2f8" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/16db1dc4-96c8-440a-8358-7df22ac98ae2" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4c222af4-0cd2-4625-8c5d-f57a1bbc052d" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/144f60f4-8849-4d14-988c-fb7cc19276c9" />
-## Transcript History
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/12e76657-7679-4c99-8633-5c29f5274056" />
 
 ## Upload Transcript
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f9f2ab38-f51c-45d2-840c-d60232a65eb2" />
@@ -257,6 +241,15 @@ GEMINI_PROJECT_ID=projects/your_project_id
 ## Kanban Board
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/7b59b60d-f2bd-4216-a7f9-273b6b808f4f" />
 
+## Transcript History
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/12e76657-7679-4c99-8633-5c29f5274056" />
+
+## Future Enhancements
+
+- 📂 Recording Upload Support – Allow users to upload meeting recordings directly, automatically convert them to transcripts, and generate tasks from the discussion.
+- 🔐 User Authentication – Add login and role-based access for team members.
+- 🗄️ Database Integration – Replace JSON storage with databases like PostgreSQL or MongoDB.
+- 🌐 Multi-language Support – Extract tasks from meetings in multiple languages.
 
 
 
