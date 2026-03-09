@@ -216,101 +216,7 @@ GEMINI_API_KEY=your_api_key_from_https://ai.google.dev/
 GEMINI_PROJECT_ID=projects/your_project_id
 ```
 
-**Important Notes:**
-- Free tier quota resets daily at 00:00 UTC
-- Recommended: Enable billing for production use (very cheap: ~$0.0001 per 1000 requests)
-- If you hit 429 quota errors, wait for reset or enable billing
-
-## Example Workflow
-
-1. **Start both servers** (in separate terminals):
-   - Backend: 
-     ```bash
-     cd backend
-     venv\Scripts\activate  # or source venv/bin/activate on macOS/Linux
-     uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
      ```
-   - Frontend: 
-     ```bash
-     cd frontend
-     npm run dev
-     ```
-
-2. **Access the app**: Open `http://localhost:5173` (or shown in terminal)
-
-3. **Upload meeting transcript**:
-   - Copy and paste transcript text in the form
-   - (Optional) Specify a default task owner
-   - Click "Extract Tasks" button
-
-4. **View extracted tasks**:
-   - Gemini API processes transcript (1.5-3 seconds typically)
-   - Tasks appear in "To Do" column of Kanban board
-   - Each task automatically assigned when owner is mentioned
-   - Check browser console for extraction logs
-
-5. **Manage tasks**:
-   - Click on any task card to edit details
-   - Update: title, priority, deadline, owner
-   - Drag or click to move between columns (To Do → In Progress → Done)
-   - Changes save automatically to backend
-
-## Troubleshooting
-
-### 429 "Too Many Requests" Error
-**Problem**: "You exceeded your current quota"
-**Solutions** (in order):
-1. Wait 60+ seconds for quota to reset
-2. Create a new Gemini API key at https://ai.google.dev/
-3. Enable billing in Google Cloud Console (very affordable)
-
-### Tasks Not Showing in Kanban Board
-**Debug steps**:
-1. Open browser DevTools (F12) → Console tab
-2. Extract a transcript and look for logs:
-   - `✅ Fetched X tasks`
-   - `📊 Task grouping: todo=X`
-3. If tasks are 0, check backend logs for extraction errors
-4. Hard refresh browser: `Ctrl+Shift+R`
-
-### Backend Connection Issues
-**Check**:
-- Backend running on port 8000: `http://localhost:8000`
-- Frontend can reach backend: No CORS errors in console
-- Database files exist: `backend/app/db/tasks.json` and `users.json`
-
-## Development Notes
-
-### Adding More Users
-Edit `backend/app/db/users.json` and add new users with unique IDs:
-```json
-{
-  "id": "5",
-  "name": "Emma Davis",
-  "role": "Marketing Manager"
-}
-```
-
-### Customizing Task Extraction
-The AI prompt can be customized in `backend/app/services/ai_service.py`:
-- Modify the System prompt to change extraction behavior
-- Adjust priority detection rules
-- Change deadline format expectations
-- Add/remove task classification rules
-
-### Gemini Model Information
-- **Model**: `gemini-2.5-flash-lite`
-- **Why this model?**: Fastest, smallest, best for free-tier
-- **Costs**: Free tier: 1M tokens/day; With billing: ~$0.0001 per 1000 input tokens
-- **Latency**: Typically 1-3 seconds per request
-- **Limits**: 10 requests/minute (free tier), 1000/day cumulative
-
-### Building Frontend for Production
-```bash
-cd frontend
-npm run build
-# Output files in dist/
-```
 
 ## How It Works
 
@@ -323,21 +229,6 @@ npm run build
 6. Backend auto-assigns owners by matching names against user database
 7. Tasks saved to `backend/app/db/tasks.json`
 8. Frontend refreshes Kanban board with new tasks
-
-### Error Handling & Retries
-- **Free-tier protection**: Transcript auto-trimmed to 4000 characters
-- **Rate limit handling**: 3 automatic retry attempts with exponential backoff
-- **Retry delays**: 2 seconds → 5 seconds → 10 seconds
-- **No API retry spam**: Retries are at application level, not SDK level
-- **Fails gracefully**: 503 error if all retries exhausted
-
-## Limitations & Known Issues
-
-- **Free-tier quota**: Resets daily, may be shared across users on same IP
-- **Transcript length**: Limited to 4000 characters for stability
-- **Owner matching**: Case-insensitive but requires name substring match
-- **Storage**: JSON files (not suitable for very large datasets)
-- **No persistence**: Database stored in files, not in cloud
 
 ## Future Enhancements
 
