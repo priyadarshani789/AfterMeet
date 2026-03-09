@@ -177,5 +177,145 @@
         "length": 235
       }
     ]
+  },
+  {
+    "id": "51c80830",
+    "name": "JadeFlow",
+    "description": "",
+    "created_at": "2026-03-09T01:55:58.743081",
+    "updated_at": 1773001936.8424602,
+    "tasks": [
+      {
+        "id": "27bb7bd7-9e0e-4329-b0e0-d0cae7aa4173",
+        "title": "Deploy the weekly pulse email template to production after reviewing changes",
+        "owner_id": "1773001652.7087598",
+        "owner_name": "Atharva",
+        "priority": "medium",
+        "status": "in_progress",
+        "deadline": "",
+        "created_at": "2026-03-09T01:59:08.336284",
+        "updated_at": "2026-03-09T02:00:20.608479"
+      },
+      {
+        "id": "180ac16a-0fef-411a-baad-49098c75a048",
+        "title": "Delete the problem and comments from the database for Pimal's submission and ask Pimal to resend the problem",
+        "owner_id": "1773001652.6945205",
+        "owner_name": "Priyadarshani Kalbandhe",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.348319",
+        "updated_at": "2026-03-09T01:59:08.348319"
+      },
+      {
+        "id": "1379c008-2494-4807-84e0-a41da5f52f03",
+        "title": "Change UAT items to 'production ready'",
+        "owner_id": "1773001652.7205894",
+        "owner_name": "Bhagyashri Kolhe",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.357287",
+        "updated_at": "2026-03-09T01:59:08.357287"
+      },
+      {
+        "id": "ecc32454-52b6-4fef-ae8f-cbdc50780576",
+        "title": "Clarify the IP removal part, ensuring the IP field does not appear during activity submission",
+        "owner_id": "1773001652.6945205",
+        "owner_name": "Priyadarshani Kalbandhe",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.366114",
+        "updated_at": "2026-03-09T01:59:08.366114"
+      },
+      {
+        "id": "3959fb3b-0065-4922-a949-9a9f20712cef",
+        "title": "Mark the time-based filter for top 10 customer engagement as 'Cancelled' or 'On Hold'",
+        "owner_id": "1773001652.7087598",
+        "owner_name": "Atharva",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.376554",
+        "updated_at": "2026-03-09T01:59:08.376554"
+      },
+      {
+        "id": "75633b52-805a-4fe5-951c-a409dd09d364",
+        "title": "Remove IP solutions from the submission flow immediately",
+        "owner_id": "1773001652.6945205",
+        "owner_name": "Priyadarshani Kalbandhe",
+        "priority": "high",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.387021",
+        "updated_at": "2026-03-09T01:59:08.387021"
+      },
+      {
+        "id": "2e83a784-8eeb-453c-8f5d-6c3590a07ac8",
+        "title": "Ensure upcoming submissions cannot select the IP category",
+        "owner_id": "1773001652.6676242",
+        "owner_name": "Kuppili Murthy",
+        "priority": "high",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.396548",
+        "updated_at": "2026-03-09T01:59:08.396548"
+      },
+      {
+        "id": "c6934cde-ef2b-4038-8aeb-716d5f0c6dcc",
+        "title": "Add the Service Line (SL) Leader name to the activity list view",
+        "owner_id": "1773001652.7087598",
+        "owner_name": "Atharva",
+        "priority": "medium",
+        "status": "todo",
+        "deadline": null,
+        "created_at": "2026-03-09T01:59:08.404951",
+        "updated_at": "2026-03-09T01:59:08.404951"
+      }
+    ],
+    "users": [
+      {
+        "id": "1773001652.6676242",
+        "name": "Kuppili Murthy",
+        "role": "Product Manager",
+        "availability": true
+      },
+      {
+        "id": "1773001652.6811152",
+        "name": "Sanskruti Nigade",
+        "role": "Developer",
+        "availability": true
+      },
+      {
+        "id": "1773001652.6945205",
+        "name": "Priyadarshani Kalbandhe",
+        "role": "Developer",
+        "availability": true
+      },
+      {
+        "id": "1773001652.7087598",
+        "name": "Atharva",
+        "role": "Developer",
+        "availability": true
+      },
+      {
+        "id": "1773001652.7205894",
+        "name": "Bhagyashri Kolhe",
+        "role": "QA Engineer",
+        "availability": true
+      }
+    ],
+    "transcripts": [
+      {
+        "id": "39f787d3-0ac6-4c16-bba1-96aa2f687fa6",
+        "project_id": "51c80830",
+        "project_name": "JadeFlow",
+        "content": "\nMeeting Recording and Transcription Status: Kuppili Murty noted that the session was not being recorded, similar to an observation made the previous day. It was confirmed that the transcription and note-taking process was functional, but Bhagyashri Kolhe confirmed that they did have the ability to record the session (00:00:00).\nWeekly Pulse Email Template Deployment: The conversation moved to deploying the weekly pulse email template to production. Although Kuppili Murty initially thought the pulse was completed, Priyadarshani Kalbandhe clarified that testing was not yet completed. It was decided that after reviewing the changes, the email template could be moved to production (00:00:00).\nEmail Template Status and Functionality: Priyadarshani Kalbandhe mentioned that a previous version had been moved to production and only minor changes from the author would be moved today if required. Kuppili Murty inquired about viewing the changes in production, and Priyadarshani Kalbandhe explained that the weekly emails trigger on Thursdays (later clarified as Tuesdays) and could not be directly viewed as live emails. It was confirmed that comments were not functioning as an intended feature; they are only meant for resolution purposes (00:01:48).\nIssue with Problem Submission IDs: Priyadarshani Kalbandhe explained that three previously submitted problems had never sent a message to the group, resulting in their IDs not being created. Consequently, whenever a solution was marked, it would not be correctly associated with the problem in the group. Raja had advised against testing in the live environment, and Kuppili Murty noted they lacked admin rights to delete the test issues, suggesting Priyadarshani Kalbandhe should delete them (00:02:48).\nProcess for Submitting/Deleting Problems and Solutions: To resolve the issue with Pimal's submitted problem and solution, Priyadarshani Kalbandhe suggested deleting the problem and comments from the database and then asking Pimal to resend the problem. Kuppili Murty expressed concern about allowing the same person to submit a problem and then mark their own solution, though Priyadarshani Kalbandhe clarified that Raja had provided this requirement for users who find a solution to an old problem later (00:04:47). Kuppili Murty shared concerns that this might create a loophole, but decided to move on from the discussion (00:05:44).\nManagement of UAT and Production Tickets: Kuppili Murty noted that many items were still listed in UAT (User Acceptance Testing) and asked Bhagyashri Kolhe to change these items to \"production ready\" due to Raja's expected concern about 37 items remaining in UAT (00:05:44). Kuppili Murty emphasized that they needed to know the status of tasks for the week, especially since they had added three or four tasks (00:06:45).\nIP Removal Clarification: Priyadarshani Kalbandhe requested clarification on the \"IP removal part,\" to which Kuppili Murty responded that the IP field should not appear when someone tries to submit an activity. Bhagyashri Kolhe then mentioned that the time-based filter for top 10 customer engagement had not been implemented and asked if they could mark it as complete (00:07:40). Kuppili Murty agreed to mark it as \"Cancelled\" or \"On Hold\" due to changing requirements (00:08:42).\nIP Solution Removal Priority: Kuppili Murty stressed the urgency of removing IP solutions from the submission flow because Raja was becoming frustrated that many people were submitting under the IP category for the current year. Kuppili Murty instructed the team to remove the IP solutions immediately, even suggesting a temporary disablement if necessary, considering it a critical issue (00:08:42) (00:11:00). They clarified that older IP submissions could remain visible, but upcoming submissions should not be able to select that category (00:09:51).\nService Line Leader Name Display: Kuppili Murty noted that the Service Line (SL) Leader name was missing from the activity list view, showing only the owner (00:12:01). They argued that displaying the SL leader name is critical for knowing who needs to approve or deny an activity, especially for follow-up by the administration (00:13:04). It was agreed that adding a column for the SL Leader name would be helpful for everyone, including those who do not know their SL leader (00:16:16).\nData Download Functionality Requirement: Kuppili Murty projected a future need for administrators to download data, including SL leader names or mail IDs, to facilitate easier follow-up when dealing with a high volume of approvals (00:17:20). They also mentioned a long-term requirement for the ability to download monthly TL (Thought Leadership) activities data, including grades and business impact (00:18:15).\nWeekly Pulse Date Range Correction: While reviewing the production email template, Bhagyashri Kolhe presented the updated weekly pulse mail with a date range from February 27th to March 5th. Kuppili Murty clarified that the date range should reflect the last week's period, such as February 23rd to March 1st, because the email is triggered in the following week (00:19:41).\nEmail Template Design and Alignment Adjustments: The team reviewed alignment and spacing issues in the email template, including the \"ID8 solve\" title not being centered (00:27:45). Atharv Botre suggested reducing the text size to fit \"Business Opportunities Created\" into two lines. Kuppili Murty also requested aligning the top box (Our Ideation Journey So Far) to the right to fit the word \"So Far\" on one line (00:29:02).\nAI Implementation Discussion for J Nova: Priyadarshani Kalbandhe reported having spoken with Akash, who suggested they could handle problem duplication if the submission came from the G chat form and not the J Nova application. Priyadarshani Kalbandhe outlined technical constraints, explaining that integrating a bot within the application would require building their own or using an external application like Zapier, which would be costly and time-consuming (00:25:17).\nAI Timeline and Resource Needs: Kuppili Murty expressed concern that even with Canvas team help, an aggressive timeline of 20 days (before the end of March) for development and testing of a major AI feature was difficult (00:34:44). The team acknowledged that both Canvas and internal development would incur costs (00:26:42). Kuppili Murty indicated that Raja was willing to fund full-time resources for one month to assist with the AI implementation due to the criticality of the feature (00:35:38).\nAlternative AI Implementation and Feature Prioritization: The team discussed implementing smaller, immediate AI features, such as an auto-correction or reframe feature for description submissions, which would function like a grammar checker (00:38:58). Bhagyashri Kolhe noted a backlog item that was not implemented: requiring users to select \"existing customer\" or \"prospect\" when the category is customer engagement, which they agreed to plan for. Kuppili Murty then redirected focus to a major feature, suggesting the team target one big functionality for all three resources to work on, rather than small features (00:40:01).\nDocument Management Strategy Enhancement: Bhagyashri Kolhe shared a message from an internal group regarding the next important platform intelligence enhancement: implementing the document management strategy. Kuppili Murty requested Bhagyashri Kolhe to locate the requirements for this feature, which was confirmed to be in the BA/QA folder and related to Google Drive (00:41:26).\n\nSuggested next steps\nKuppili Murty will ask Ash to send the drafted and changed email that should be triggered from the Java admin, and post the prepared content in the j noa integration chat group after the mail is triggered.\nKuppili Murty will follow up on the fourth part regarding volunteers required for the Jade Nova on the A part and talk to Chaitanya about finding a full-time senior resource for the AI project.\nBhagyashri Kolhe will mark the time based filter requirement for top 10 customer engagement as 'Cancelled' or 'On hold' because it was not implemented.\nBhagyashri Kolhe will check the backlog requirements, specifically the customer prospect requirement, and find the requirements for 'document management strategy' which was mentioned by Raja.\nPriyadarshani Kalbandhe and Atharv Botre will immediately remove the IP solutions category and related options from the activity submission area because it is a critical issue, first testing the changes on UAT and then implementing them on production.\nBhagyashri Kolhe, Atharv Botre, and Priyadarshani Kalbandhe will update the weekly pulse email template by (1) showing the last week's date range, (2) removing 'TL loops', (3) centering 'ID8 Solve', (4) increasing the size of the top box to keep 'so far' in one line, and (5) increasing the height and size for the bars in the five week trend section.\nThe group will implement a method to show the SL leader name in the list view, either in the next stage action column or a new column, to show who is the owner of the action for every status.\n\nYou should review Gemini's notes to make sure they're accurate. Get tips and learn how Gemini takes notes\nPlease provide feedback about using Gemini to take notes in a short survey.",
+        "tasks_extracted": 8,
+        "created_at": "2026-03-09T01:59:08.417626",
+        "length": 9295
+      }
+    ]
   }
 ]
