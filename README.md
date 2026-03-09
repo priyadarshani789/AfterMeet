@@ -55,8 +55,7 @@ AfterMeet/
     │   ├── main.py                    # FastAPI app
     │   └── __init__.py
     ├── requirements.txt
-    ├── .env                           # Environment variables
-    └── .env.example
+    ├── .env                           # Environment 
 ```
 
 ## Setup Instructions
@@ -159,7 +158,8 @@ Frontend will be available at: `http://localhost:3000`
 - 📝 **Transcript Upload**: Paste meeting transcripts for AI processing
 - 📊 **Kanban Board**: Organize tasks in To Do → In Progress → Done columns
 - ✏️ **Task Editing**: Edit task details, assign owners, set priorities and deadlines
-- 👥 **Auto-assignment**: Tasks auto-assigned to team members (if not specified)
+- � **Google Chat Integration**: Send task updates to Google Chat channels
+- �👥 **Auto-assignment**: Tasks auto-assigned to team members (if not specified)
 - 📅 **Deadline Management**: Set and track task deadlines
 - 🔄 **Real-time updates**: Board refreshes automatically after task extraction
 
